@@ -11,48 +11,36 @@ namespace Mang1Chieu.GhepPhanTu
 
             // có thể thay đổi số lượng cũng như phần tử ở mảng a,b để kiểm tra kết quả
 
-            int[] a = { 1, 3, 5 };
+            int[] a = { 1, 3, 5 ,4};
             int[] b = { 7, 8 };
 
             var ketqua = new Mang1Chieu().Ghep2Mang1Chieu(a, b);
 
+            string s = "[";
             foreach (var i in ketqua)
             {
-                Console.WriteLine("----");
+                s += "[";
+                Console.WriteLine("-----------------");
                 foreach (var si in i)
                 {
-                    Console.Write(si);
-                    Console.Write(", ");
+                    s += si.ToString()+", ";
+                    Console.WriteLine(si.ToString());
                 }
+                Console.WriteLine("-----------------");
+                s += "]";
             }
+            s += "]";
 
+            Console.WriteLine(s);
             Console.ReadLine();
         }
     }
 
     class Mang1Chieu
     {
-
-
-        public List<string> Ghep2Mang1Chieu(int[] mang1, int[] mang2)
+        public int[][] Ghep2Mang1Chieu(int[] mang1, int[] mang2)
         {
-            List<string> ketqua_ = new List<string>();
-            foreach (var item in mang1)
-            {
-                string kq;
-                foreach (var item_ in mang2)
-                {
-                    kq = "[" + item.ToString() + "," + item_.ToString() + "]";
-                    ketqua_.Add(kq);
-                }
-            }
-            foreach (var item1 in ketqua_)
-            {
-                Console.WriteLine(item1.ToString());
-            }
-
-            Console.ReadLine();
-            return ketqua_;
+            //https://www.c-sharpcorner.com/UploadFile/puranindia/jagged-arrays-in-C-Sharp-net/
         }
     }
 }

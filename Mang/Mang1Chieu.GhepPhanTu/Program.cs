@@ -31,11 +31,31 @@ namespace Mang1Chieu.GhepPhanTu
 
     class Mang1Chieu
     {
-        public int[][] Ghep2Mang1Chieu(int []mang1, int[] mang2)
+        class Program
         {
-            //todo: làm code ở đây theo yêu cầu: gep từng phần tử mảng 1 với mảng 2 thành 1 mảng 2 chiều như sau:
-            //vd: mang1={1,3,5} mang2={7,8}
-            //thi ket qua la = [[1,7],[1,8],[3,7],[3,8],[5,7],[5,8]]
+            static void Main(string[] args)
+            {
+                int[] a = { 1, 2, 3 };
+                int[] b = { 6, 7, 8 };
+                List<string> ketqua_ = new List<string>();
+                foreach (var item in a)
+                {
+                    string kq;
+                    foreach (var item_ in b)
+                    {
+                        kq = "[" + item.ToString() + "," + item_.ToString() + "]";
+                        ketqua_.Add(kq);
+                    }
+                }
+                foreach (var item1 in ketqua_)
+                {
+                    Console.WriteLine(item1.ToString());
+                }
+
+                Console.ReadLine();
+
+            }
+
         }
     }
 }

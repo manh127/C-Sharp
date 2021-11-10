@@ -34,7 +34,7 @@ namespace Mang1Chieu.GhepPhanTu
     {
 
 
-        public List<string> Ghep2Mang1Chieu(int[] mang1, int[] mang2)
+        public int[][] Ghep2Mang1Chieu(int[] mang1, int[] mang2)
         {
             List<string> ketqua_ = new List<string>();
             foreach (var item in mang1)

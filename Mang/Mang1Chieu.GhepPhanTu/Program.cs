@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 namespace Mang1Chieu.GhepPhanTu
 {
     class Program
@@ -8,53 +10,53 @@ namespace Mang1Chieu.GhepPhanTu
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-
             // có thể thay đổi số lượng cũng như phần tử ở mảng a,b để kiểm tra kết quả
-
-            int[] a = { 1, 3, 5 };
+            int[] a = { 1, 3, 5, 9,10};
             int[] b = { 7, 8 };
-
             var ketqua = new Mang1Chieu().Ghep2Mang1Chieu(a, b);
-
+            string s = "[";
             foreach (var i in ketqua)
             {
-                Console.WriteLine("----");
+                s += "[";
+                Console.WriteLine("-----------------");
                 foreach (var si in i)
                 {
-                    Console.Write(si);
-                    Console.Write(", ");
+                    s += si.ToString() + ", ";
+                    Console.WriteLine(si.ToString());
                 }
+                Console.WriteLine("-----------------");
+                s += "]";
             }
-
+            s += "]";
+            Console.WriteLine(s);
             Console.ReadLine();
         }
     }
-
     class Mang1Chieu
     {
-
-
         public int[][] Ghep2Mang1Chieu(int[] mang1, int[] mang2)
         {
-            List<string> ketqua_ = new List<string>();
+
+            List<int[]> jagged = new List<int[]>();
             foreach (var item in mang1)
             {
-                string kq;
                 foreach (var item_ in mang2)
                 {
-                    kq = "[" + item.ToString() + "," + item_.ToString() + "]";
-                    ketqua_.Add(kq);
+                    int[] arr = { item, item_ };
+                    jagged.Add(arr);
                 }
             }
-            foreach (var item1 in ketqua_)
-            {
-                Console.WriteLine(item1.ToString());
-            }
 
-            Console.ReadLine();
-            return ketqua_;
+            int[][] jagged_arr = new int[jagged.Count][];
+            for (int i = 0; i < jagged.Count; i++)
+            {
+                int[] deviceIDS = jagged[i].ToArray();
+                int a = jagged[i].ToArray().First();
+                int b = jagged[i].ToArray().Last();
+
+                jagged_arr[i] = new int[] { a, b };
+            }
+            return jagged_arr;
         }
     }
 }
-        
-

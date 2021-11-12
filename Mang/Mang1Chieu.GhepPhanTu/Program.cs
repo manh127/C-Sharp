@@ -14,22 +14,39 @@ namespace Mang1Chieu.GhepPhanTu
             int[] a = { 1, 3, 5, 4 };
             int[] b = { 7, 8 };
 
-            var ketqua = new Mang1Chieu().Ghep2Mang1Chieu(a, b);
+            Mang1Chieu mang1Chieu = new Mang1Chieu();
+
+            var ketqua = mang1Chieu.Ghep2Mang1Chieu(a, b);
+
+            Display(ketqua);
+
+            int[] c = { 100, 200 };
+
+            var ketqua1 = new Mang1Chieu().GhepCacMang1Chieu(new int[][] { a, b, c });
+
+            Display(ketqua1);
+
+        }
+
+        static void Display(int[][] inputs)
+        {
+            Console.WriteLine("-----------------");
             string s = "[";
-            foreach (var i in ketqua)
+            foreach (var i in inputs)
             {
                 s += "[";
-                Console.WriteLine("-----------------");
+               
                 foreach (var si in i)
                 {
                     s += si.ToString() + ",\a ";
                     Console.WriteLine(si.ToString());
                 }
-                Console.WriteLine("-----------------");
                 s += "]";
+                Console.WriteLine("-----------------");
             }
             s += "]";
             Console.WriteLine(s);
+            Console.WriteLine("-----------------\r\nPress [Enter] key to continue");
             Console.ReadLine();
         }
     }
@@ -48,6 +65,14 @@ namespace Mang1Chieu.GhepPhanTu
                 }
             }
             return jagged_arr;
+        }
+
+        public int[][] GhepCacMang1Chieu(int[][] inputs)
+        {
+            //todo: code cho logi phia duoi
+            // vd: inputs = [[1],[2,3],[4,5]]
+            // ket qua return: [[1,2,4],[1,2,5],[1,3,4],[1,3,5]]
+            throw new NotImplementedException();
         }
     }
 }

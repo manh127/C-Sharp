@@ -12,6 +12,21 @@ namespace EntityFrameWorkJoin
            /* var classResponsitory = new ClassRepository();
             var studentResponsitory = new StudentRespository();*/
             mongoStudentRepository.Create("Manh", "Nam", 1999);
+            mongoStudentRepository.Create("Dung", "Nam", 1999);
+            mongoStudentRepository.Create("Nam", "Nam", 2001);
+            mongoStudentRepository.Create("Lan", "Nu", 1999);
+            mongoStudentRepository.Create("Hang","Nu", 2000);
+            mongoStudentRepository.Create("Bao", "Nam", 1998);
+            mongoStudentRepository.Create("Diep", "Nu", 2002);
+            mongoStudentRepository.Create("Hue", "Nu", 1999);
+            mongoStudentRepository.Create("Hung", "Nam", 1999);
+            mongoStudentRepository.Create("Cuong", "Nam", 2000);
+            mongoStudentRepository.Create("Hong", "Nu", 1999);
+            mongoStudentRepository.Create("Tuan", "Nam", 1995);
+            mongoStudentRepository.Create("Thang", "Nam", 1996);
+            mongoStudentRepository.Create("Dang", "Nam", 1997);
+            mongoStudentRepository.Create("Xuan", "Nu", 1998);
+
             /* responsitory.Create("manh", "nam", 1999);
              responsitory.Create("nam", "nam", 1998);
              responsitory.Create("linh", "nu", 1997);

@@ -17,12 +17,10 @@ namespace EntityFrameWorkJoin.MongoModels
                     Sex = sex,
                     YearOfBirth = yearOfBirth
                 };
-                using ( var db = new MongoDBContext())
+                using (var db = new MongoDBContext())
                 {
                     db.StudentInformation.Collection.InsertOne(student);
-                   
                 }
-
                 return true;
             }
             catch (Exception E)

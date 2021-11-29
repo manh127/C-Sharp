@@ -10,7 +10,6 @@ namespace EntityFrameWorkJoin.MongoModels
 {
     public class ClassStudent: IEntityUseObjectId
     {
-        
         public Guid Id { get; set; }
       
         public Guid IdStudent { get; set; }

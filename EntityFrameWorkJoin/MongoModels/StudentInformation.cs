@@ -8,7 +8,6 @@ using System.Text;
 
 namespace EntityFrameWorkJoin.MongoModels
 {
-    [Table("studentinformation")]
    public class StudentInformation: IEntityUseObjectId
     {
         public Guid Id { get; set; }

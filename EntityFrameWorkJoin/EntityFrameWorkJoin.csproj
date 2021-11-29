@@ -11,8 +11,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="MongoDB.Driver" Version="2.14.0" />
     <PackageReference Include="MySql.Data" Version="8.0.27" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.22" />
+    <PackageReference Include="RobotCloud.Core" Version="1.0.0" />
+    <PackageReference Include="RobotCloud.CoreMongoDb" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

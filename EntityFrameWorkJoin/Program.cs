@@ -1,4 +1,5 @@
 ﻿using EntityFrameWorkJoin.models;
+using EntityFrameWorkJoin.MongoModels;
 using System;
 
 namespace EntityFrameWorkJoin
@@ -7,9 +8,10 @@ namespace EntityFrameWorkJoin
     {
         static void Main(string[] args)
         {
-            var classResponsitory = new ClassRepository();
-            var studentResponsitory = new StudentRespository();
-
+            var mongoStudentRepository = new RepositoryStudentMongo();
+           /* var classResponsitory = new ClassRepository();
+            var studentResponsitory = new StudentRespository();*/
+            mongoStudentRepository.Create("Manh", "Nam", 1999);
             /* responsitory.Create("manh", "nam", 1999);
              responsitory.Create("nam", "nam", 1998);
              responsitory.Create("linh", "nu", 1997);
@@ -226,8 +228,8 @@ namespace EntityFrameWorkJoin
             //{
             //    Console.WriteLine($"ten hoc sinh : { item.Name} ");
             //}
-            
-            
+
+
         }
     }
 }

@@ -6,17 +6,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace EntityFrameWorkJoin.models
+namespace EntityFrameWorkJoin.MongoModels
+
 {
-    [Table("studentinformation")]
-   public class StudentInformation
-    {
-        [Column(TypeName = "varchar(40)")]
-        [Key]
+    public  class Classes : IEntityUseObjectId
+    { 
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Sex { get; set; }
-        public int YearOfBirth { get; set; }
-      
+        public int Grade { get; set; }
+        ObjectId IEntityUseObjectId.Id { get ; set; }
     }
 }

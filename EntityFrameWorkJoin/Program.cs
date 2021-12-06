@@ -9,23 +9,44 @@ namespace EntityFrameWorkJoin
         static void Main(string[] args)
         {
             var mongoStudentRepository = new RepositoryStudentMongo();
-           /* var classResponsitory = new ClassRepository();
-            var studentResponsitory = new StudentRespository();*/
-            mongoStudentRepository.Create("Manh", "Nam", 1999);
-            mongoStudentRepository.Create("Dung", "Nam", 1999);
-            mongoStudentRepository.Create("Nam", "Nam", 2001);
-            mongoStudentRepository.Create("Lan", "Nu", 1999);
-            mongoStudentRepository.Create("Hang","Nu", 2000);
-            mongoStudentRepository.Create("Bao", "Nam", 1998);
-            mongoStudentRepository.Create("Diep", "Nu", 2002);
-            mongoStudentRepository.Create("Hue", "Nu", 1999);
-            mongoStudentRepository.Create("Hung", "Nam", 1999);
-            mongoStudentRepository.Create("Cuong", "Nam", 2000);
-            mongoStudentRepository.Create("Hong", "Nu", 1999);
-            mongoStudentRepository.Create("Tuan", "Nam", 1995);
-            mongoStudentRepository.Create("Thang", "Nam", 1996);
-            mongoStudentRepository.Create("Dang", "Nam", 1997);
-            mongoStudentRepository.Create("Xuan", "Nu", 1998);
+            var mongoClassRepository = new RepositoryClassMongo();
+
+
+
+
+
+            /* var classResponsitory = new ClassRepository();
+             var studentResponsitory = new StudentRespository();*/
+            /* mongoStudentRepository.Create("Manh", "Nam", 1999);
+             mongoStudentRepository.Create("Dung", "Nam", 1999);
+             mongoStudentRepository.Create("Nam", "Nam", 2001);
+             mongoStudentRepository.Create("Lan", "Nu", 1999);
+             mongoStudentRepository.Create("Hang","Nu", 2000);
+             mongoStudentRepository.Create("Bao", "Nam", 1998);
+             mongoStudentRepository.Create("Diep", "Nu", 2002);
+             mongoStudentRepository.Create("Hue", "Nu", 1999);
+             mongoStudentRepository.Create("Hung", "Nam", 1999);
+             mongoStudentRepository.Create("Cuong", "Nam", 2000);
+             mongoStudentRepository.Create("Hong", "Nu", 1999);
+             mongoStudentRepository.Create("Tuan", "Nam", 1995);
+             mongoStudentRepository.Create("Thang", "Nam", 1996);
+             mongoStudentRepository.Create("Dang", "Nam", 1997);
+             mongoStudentRepository.Create("Xuan", "Nu", 1998);*/
+
+          /*  mongoClassRepository.CreateClass("Van", 10);
+            mongoClassRepository.CreateClass("Toan", 11);
+            mongoClassRepository.CreateClass("Anh", 12);
+            mongoClassRepository.CreateClass("Su", 13);
+            mongoClassRepository.CreateClass("Dia", 14);
+            mongoClassRepository.CreateClass("GDCD", 11);
+            mongoClassRepository.CreateClass("The Duc", 12);
+            mongoClassRepository.CreateClass("Sinh Hoc", 13);
+            mongoClassRepository.CreateClass("Hoa Hoc", 14);
+            mongoClassRepository.CreateClass("Cong Nghe", 10);
+            mongoClassRepository.CreateClass("Quan Su", 11);
+            mongoClassRepository.CreateClass("Triet Hoc", 10);*/
+
+
 
             /* responsitory.Create("manh", "nam", 1999);
              responsitory.Create("nam", "nam", 1998);

@@ -1,19 +1,17 @@
-﻿using EntityFrameWorkJoin.models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using MongoDB.Driver;
-
-namespace EntityFrameWorkJoin.MongoModels
+using System.Threading.Tasks;
+using NetCoreApi;
+namespace NetCoreApi.Models
 {
-      public class RepositoryStudentMongo
+    public class RepositoryStudent
     {
         public bool Create(string name, string sex, int yearOfBirth)
         {
             try
             {
-                var student = new StudentInformation
+                var student = new Student
                 {
                     Id = Guid.NewGuid(),
                     Name = name,
@@ -21,8 +19,8 @@ namespace EntityFrameWorkJoin.MongoModels
                     YearOfBirth = yearOfBirth
                 };
                 using (var db = new MongoDBContext())
-                { 
-                    db.StudentInformation.Collection.InsertOne(student);
+                {
+                    db.Students.Collection.InsertOne(student);
                 }
                 return true;
             }
@@ -31,16 +29,16 @@ namespace EntityFrameWorkJoin.MongoModels
                 return false;
             }
         }
-        public StudentModelsMongo GetStudentInfor(Guid id)
+        public StudentModels GetStudentInfor(Guid id)
         {
             try
             {
                 using (var db = new MongoDBContext())
                 {
-                    var StudentInfor = db.StudentInformation.Where(x => x.Id == id).FirstOrDefault();
+                    var StudentInfor = db.Students.Where(x => x.Id == id).FirstOrDefault();
                     if (StudentInfor != null)
                     {
-                        return new StudentModelsMongo
+                        return new StudentModels
                         {
                             Id = id,
                             Name = StudentInfor.Name,
@@ -54,26 +52,26 @@ namespace EntityFrameWorkJoin.MongoModels
                 return null;
             }
         }
-        public bool UpdateStudent(Guid id,String name , string sex , int yearofbirth)
+        public bool UpdateStudent(Guid id, String name, string sex, int yearofbirth)
         {
             try
             {
-                var student = new StudentInformation
+                var student = new Student
                 {
-                    Id=id,
-                    Name=name,
-                    Sex=sex,
-                    YearOfBirth=yearofbirth
+                    Id = id,
+                    Name = name,
+                    Sex = sex,
+                    YearOfBirth = yearofbirth
                 };
                 using (var db = new MongoDBContext())
                 {
-                    student = db.StudentInformation.Where(x => x.Id == id).FirstOrDefault();
-                    if(student!=null)
+                    student = db.Students.Where(x => x.Id == id).FirstOrDefault();
+                    if (student != null)
                     {
                         student.Name = name;
                         student.Sex = sex;
                         student.YearOfBirth = yearofbirth;
-                        db.StudentInformation.Update(student);
+                        db.Students.Update(student);
                     }
                     else
                     {
@@ -92,12 +90,12 @@ namespace EntityFrameWorkJoin.MongoModels
         {
             try
             {
-                using(var db = new MongoDBContext())
+                using (var db = new MongoDBContext())
                 {
-                    var removeStudent = db.StudentInformation.Where(x => x.Id == id).FirstOrDefault();
-                    if(removeStudent!=null)
+                    var removeStudent = db.Students.Where(x => x.Id == id).FirstOrDefault();
+                    if (removeStudent != null)
                     {
-                        db.StudentInformation.Delete(removeStudent);
+                        db.Students.Delete(removeStudent);
                     }
                     else
                     {
@@ -112,7 +110,7 @@ namespace EntityFrameWorkJoin.MongoModels
                 return false;
             }
         }
-        public bool AddStudentToClass(Guid studentId ,Guid clasId)
+        public bool AddStudentToClass(Guid studentId, Guid clasId)
         {
             try
             {
@@ -126,5 +124,5 @@ namespace EntityFrameWorkJoin.MongoModels
             }
         }
     }
-    
 }
+

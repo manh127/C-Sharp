@@ -35,7 +35,7 @@ namespace EntityFrameWorkJoin.models
         {
             try
             {
-                using(var db = new MyDbContext())
+                using (var db = new MyDbContext())
                 {
                     var studentInfo = db.StudentInformation.Where(x => x.Id == id).FirstOrDefault();
                     if (studentInfo != null)
@@ -90,7 +90,7 @@ namespace EntityFrameWorkJoin.models
                 return false;
             }
         }
-        public bool DeleteStudent(Guid id )
+        public bool DeleteStudent(Guid id)
         {
             try
             {
@@ -170,7 +170,6 @@ namespace EntityFrameWorkJoin.models
             }
             catch (Exception)
             {
-
                 return null;
             }
         }
@@ -189,14 +188,12 @@ namespace EntityFrameWorkJoin.models
                         {
                             listStudent.Add(new StudentModels { Name = item.s.Name,Id=item.s.Id });
                         }
-                        
                     }
                     return listStudent;
                 }
             }
             catch (Exception)
             {
-
                 return null;
             }
         }

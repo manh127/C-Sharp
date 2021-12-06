@@ -8,7 +8,7 @@ namespace EntityFrameWorkJoin.MongoModels
 {
     public class MongoDBContext : BaseMongoUseObjectIdDbContext
     {
-        public MongoDBContext() : base("118.70.117.208", "ManhTest", "sysadmin", "1234a@A") { }
+        public MongoDBContext() : base("localhost", "Manh127", "useradmin", "manh1999") { }
 
         public DbSetUseObjectId<StudentInformation> StudentInformation { get; set; }
         public DbSetUseObjectId<ClassStudent> ClassStudent { get; set; }

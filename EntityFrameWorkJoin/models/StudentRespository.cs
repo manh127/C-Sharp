@@ -181,7 +181,10 @@ namespace EntityFrameWorkJoin.models
                 {
                     var listStudent = new List<StudentModels>();
                     var studentClasses = db.ClassStudent.Where(x => x.IdClass == idClass)
-                         .Join(db.StudentInformation, cs => cs.IdStudent, s => s.Id, (cs,s) => new {s}).ToList();
+                         .Join(db.StudentInformation, 
+                         cs => cs.IdStudent, 
+                         s => s.Id, 
+                         (cs,s) => new {s}).ToList();
                     if(studentClasses.Count()>0 )
                     {
                         foreach (var item in studentClasses)

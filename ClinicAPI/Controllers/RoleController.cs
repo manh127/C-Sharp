@@ -39,6 +39,6 @@ namespace ClinicAPI.Controllers
         {
             return await roleRepository.DeleteRole(id);
         }
-
+        
     }
 }

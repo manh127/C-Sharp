@@ -129,14 +129,14 @@ namespace ClinicAPI.Repo
                 return false;
             }
         }
-        public async Task<bool> UserRole(Guid UserId , Guid RoleId)
+        public async Task<bool> AddUserRole(Guid UserId , Guid RoleId)
         {
             try
             {
                 using (var db = new MyDbContext())
                 {
-                    var user = db.UserPeoples.Where(x => x.Id == UserId).FirstOrDefault();
-                    var role = db.Roles.Where(x => x.Id == RoleId).FirstOrDefault();
+                    var user = await db.UserPeoples.Where(x => x.Id == UserId).FirstOrDefaultAsync();
+                    var role = await db.Roles.Where(x => x.Id == RoleId).FirstOrDefaultAsync();
 
                     if (user == null || role == null)
                     {
@@ -146,7 +146,7 @@ namespace ClinicAPI.Repo
                     var userRole = db.UserRoles.Where(x => x.UserId == UserId && x.RoleId == RoleId).FirstOrDefault();
                     if (userRole != null)
                     {
-                        return true;
+                        return false;
                     }
                     var newUserRole = new UserRole()
                     {
@@ -175,9 +175,10 @@ namespace ClinicAPI.Repo
                     var listUser = new List<UserModels>();
                     var userRole = await db.UserRoles.Where(x => x.RoleId == idRole)
                          .Join(db.UserPeoples,
-                         cs => cs.RoleId,
+                         ur => ur.UserId,
                          s => s.Id,
                          (cs, s) => new { s }).ToListAsync();
+
                     if (userRole.Count() > 0)
                     {
                         foreach (var item in userRole)
@@ -194,9 +195,43 @@ namespace ClinicAPI.Repo
                     return listUser;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return null;
+            }
+        }
+        public async Task<bool>AddServiceToDoctor(Guid DoctorId,Guid ServiceId)
+        {
+            try
+            {
+                using (var db = new MyDbContext())
+                {
+                    var user = await db.UserPeoples.Where(x => x.Id == DoctorId).FirstOrDefaultAsync();
+                    var service = await db.Services.Where(x => x.Id == ServiceId).FirstOrDefaultAsync();
+
+                    if (user == null || service == null)
+                    {
+                        return false;
+                    }
+                    var doctorService = await db.DoctorServices.Where(x => x.ServiceId == ServiceId && x.UserId == DoctorId).FirstOrDefaultAsync();
+                    if (doctorService != null)
+                    {
+                        return false;
+                    }
+                    var newDoctorService = new DoctorService()
+                    {
+                        Id = Guid.NewGuid(),
+                        UserId=DoctorId,
+                        ServiceId=ServiceId
+                    };
+                    db.DoctorServices.Add(newDoctorService);
+                    await db.SaveChangesAsync();
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
             }
         }
 

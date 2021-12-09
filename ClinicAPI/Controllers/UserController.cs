@@ -41,12 +41,17 @@ namespace ClinicAPI.Controllers
         [HttpPost("User-Role")]
         public async Task<bool> UserRole(Guid UserId, Guid RoleId)
         {
-            return await userRepository.UserRole(UserId, RoleId);
+            return await userRepository.AddUserRole(UserId, RoleId);
         }
         [HttpPost("Get-User-Role")]
         public async Task <List<UserModels>> GetUserRole(Guid idRole)
         {
             return await userRepository.GetUserRole(idRole);
+        }
+        [HttpPost("add-service-to-doctor")]
+        public async Task<bool> AddServiceToDotor(Guid DoctorId, Guid ServiceId)
+        {
+            return await userRepository.AddServiceToDoctor(DoctorId, ServiceId);
         }
     }
 }

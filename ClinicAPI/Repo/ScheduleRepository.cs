@@ -8,21 +8,44 @@ using System.Threading.Tasks;
 
 namespace ClinicAPI.Repo
 {
-    public class ServiceRepository
+    public class ScheduleRepository
     {
-        public async Task<bool> CreateService(string name, string price)
+        public async Task<bool> CreateSchedule(Guid DoctorId, Guid PatientId, long DateTimeStamp, int Status,List<Guid> serviceIds)
         {
+
             try
             {
-                var ServiceInformation = new Service
-                {
-                    Id = Guid.NewGuid(),
-                    Name = name,
-                    Price = price
-                };
                 using (var db = new MyDbContext())
                 {
-                    db.Services.Add(ServiceInformation);
+                    var doctor = await db.UserPeoples.Where(x => x.Id == DoctorId).FirstOrDefaultAsync();
+                    var patient = await db.UserPeoples.Where(x => x.Id == PatientId).FirstOrDefaultAsync();
+                    var services = await db.Services.Where(x => serviceIds.Contains(x.Id)).ToListAsync();
+                    
+                    if (doctor == null || patient == null||services.Count()==0)
+                    {
+                        return false;
+                    }
+                    
+                    var schedule = new Schedule()
+                    {
+                        Id = Guid.NewGuid(),
+                        DoctorId = DoctorId,
+                        PatientId = PatientId,
+                        DateTimeStamp = DateTimeStamp,
+                        Status=Status
+                    };
+                    var scheduleServices = new List<ScheduleService>();
+                    foreach (var serviceId in serviceIds)
+                    {
+                        scheduleServices.Add(new ScheduleService
+                        {
+                            Id = Guid.NewGuid(),
+                            ScheduleId = schedule.Id,
+                            ServiceId = serviceId
+                        });
+                    }
+                    db.Schedules.Add(schedule);
+                    db.scheduleServices.AddRange(scheduleServices);
                     await db.SaveChangesAsync();
                 }
                 return true;
@@ -32,7 +55,7 @@ namespace ClinicAPI.Repo
                 return false;
             }
         }
-        public async Task<ServiceModels> GetServiceInfo(Guid id)
+       /* public async Task<ServiceModels> GetServiceInfo(Guid id)
         {
             try
             {
@@ -112,7 +135,6 @@ namespace ClinicAPI.Repo
             {
                 return false;
             }
-        }
-       
+        }*/
     }
 }

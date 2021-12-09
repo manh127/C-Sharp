@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicAPI.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20211208073754_Revenues")]
-    partial class Revenues
+    [Migration("20211209080858_schedule")]
+    partial class schedule
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,7 +19,7 @@ namespace ClinicAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("ProductVersion", "5.0.12");
 
-            modelBuilder.Entity("ClinicAPI.Models.DoctorService", b =>
+            modelBuilder.Entity("ClinicAPI.Entity.DoctorService", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,7 +38,7 @@ namespace ClinicAPI.Migrations
                     b.ToTable("DoctorServices");
                 });
 
-            modelBuilder.Entity("ClinicAPI.Models.Revenue", b =>
+            modelBuilder.Entity("ClinicAPI.Entity.Revenue", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,7 +60,7 @@ namespace ClinicAPI.Migrations
                     b.ToTable("Revenues");
                 });
 
-            modelBuilder.Entity("ClinicAPI.Models.Role", b =>
+            modelBuilder.Entity("ClinicAPI.Entity.Role", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -77,24 +77,21 @@ namespace ClinicAPI.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("ClinicAPI.Models.Schedule", b =>
+            modelBuilder.Entity("ClinicAPI.Entity.Schedule", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(40)");
 
-                    b.Property<long>("DateTimeStamp")
-                        .HasColumnType("bigint");
+                    b.Property<string>("DateTimeStamp")
+                        .IsRequired()
+                        .HasColumnType("varchar(40)");
 
                     b.Property<string>("DoctorId")
                         .IsRequired()
                         .HasColumnType("varchar(40)");
 
                     b.Property<string>("PatientId")
-                        .IsRequired()
-                        .HasColumnType("varchar(40)");
-
-                    b.Property<string>("ServiceId")
                         .IsRequired()
                         .HasColumnType("varchar(40)");
 
@@ -109,7 +106,7 @@ namespace ClinicAPI.Migrations
                     b.ToTable("Schedules");
                 });
 
-            modelBuilder.Entity("ClinicAPI.Models.ScheduleService", b =>
+            modelBuilder.Entity("ClinicAPI.Entity.ScheduleService", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -128,7 +125,7 @@ namespace ClinicAPI.Migrations
                     b.ToTable("scheduleServices");
                 });
 
-            modelBuilder.Entity("ClinicAPI.Models.Service", b =>
+            modelBuilder.Entity("ClinicAPI.Entity.Service", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -145,7 +142,7 @@ namespace ClinicAPI.Migrations
                     b.ToTable("Services");
                 });
 
-            modelBuilder.Entity("ClinicAPI.Models.UserPeople", b =>
+            modelBuilder.Entity("ClinicAPI.Entity.UserPeople", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -177,7 +174,7 @@ namespace ClinicAPI.Migrations
                     b.ToTable("UserPeoples");
                 });
 
-            modelBuilder.Entity("ClinicAPI.Models.UserRole", b =>
+            modelBuilder.Entity("ClinicAPI.Entity.UserRole", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()

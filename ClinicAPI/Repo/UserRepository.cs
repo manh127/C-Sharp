@@ -1,4 +1,5 @@
-﻿using ClinicAPI.Models;
+﻿using ClinicAPI.Entity;
+using ClinicAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

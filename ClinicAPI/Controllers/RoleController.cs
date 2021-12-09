@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClinicAPI.Repo;
+using ClinicAPI.Entity;
 using ClinicAPI.Models;
 
 namespace ClinicAPI.Controllers

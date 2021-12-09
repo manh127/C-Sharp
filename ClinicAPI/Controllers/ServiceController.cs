@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClinicAPI.Repo;
+using ClinicAPI.Entity;
 using ClinicAPI.Models;
 
 namespace ClinicAPI.Controllers
@@ -26,8 +27,12 @@ namespace ClinicAPI.Controllers
         }
         [HttpPost("get-Service")]
         public async Task<ServiceModels> GetRoleInfo(Guid id)
-        {
-            return await serviceRepository.GetServiceInfo(id);
+        {   
+            var user = await serviceRepository.GetServiceInfo(id);
+
+
+
+            return user;
         }
         [HttpPost("Update-Service")]
         public async Task<bool> UpdateService(Guid id, string name, string price)

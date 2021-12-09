@@ -5,12 +5,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ClinicAPI.Models
+namespace ClinicAPI.Entity
 {
-    public class ServiceModels
+    public class Role
     {
+        [Column(TypeName = "varchar(40)")]
+        [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Price { get; set; }
+        public string Code { get; set; }
+
     }
 }

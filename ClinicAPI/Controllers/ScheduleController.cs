@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ClinicAPI.Models;
 using ClinicAPI.Repo;
+using ClinicAPI.Request;
 
 namespace ClinicAPI.Controllers
 {
@@ -20,9 +21,9 @@ namespace ClinicAPI.Controllers
         }
 
         [HttpPost("creat-shedule")]
-        public async Task<bool> CreateSchedule(Guid DoctorId, Guid PatientId, long DateTimeStamp, int Status, List<Guid> serviceIds)
+        public async Task<bool> CreateSchedule([FromQuery] CreateScheduleRequest request)
         {
-            return await scheduleRepository.CreateSchedule(DoctorId, PatientId, DateTimeStamp, Status,serviceIds);
+            return await scheduleRepository.CreateSchedule(request.DoctorId, request.PatientId, request.DateTimeStamp, request.Status, request.ServiceIds);
         }
     }
 }

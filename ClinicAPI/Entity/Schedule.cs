@@ -18,7 +18,6 @@ namespace ClinicAPI.Entity
         public Guid PatientId { get; set; }
         [Column(TypeName = "varchar(40)")]
         public long DateTimeStamp { get; set; }
-        public DateTime TimeDate { get; set; }
         public int Status { get; set; }
     }
 }

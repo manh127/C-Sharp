@@ -11,7 +11,7 @@ namespace ClinicAPI.Entity
         public MyDbContext() { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL(@"Server=localhost;Database=themanh999;Uid=root;Pwd=12071999;");
+            optionsBuilder.UseMySQL(@"Server=localhost;Database=themanh999;Uid=root;Pwd=12071999");
         }
 
         public DbSet<UserPeople> UserPeoples { get; set; }

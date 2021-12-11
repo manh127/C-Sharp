@@ -12,66 +12,76 @@ namespace ClinicAPI.Repo
     {
         public async Task<bool> CreateSchedule(Guid DoctorId, Guid PatientId, long DateTimeStamp, int Status,List<Guid> serviceIds)
         {
-
             try
             {
                 using (var db = new MyDbContext())
                 {
-                    var doctor = await db.UserPeoples.Where(x => x.Id == DoctorId).FirstOrDefaultAsync();
-                    var patient = await db.UserPeoples.Where(x => x.Id == PatientId).FirstOrDefaultAsync();
-                    var services = await db.Services.Where(x => serviceIds.Contains(x.Id)).ToListAsync();
-                    
-                    if (doctor == null || patient == null||services.Count()==0)
+                    var checkDoctor = await db.UserPeoples.Where(x => x.Id == DoctorId).FirstOrDefaultAsync();
+                    var checkPatient = await db.UserPeoples.Where(x => x.Id == PatientId).FirstOrDefaultAsync();
+                    var checkService = await db.Services.Where(x => serviceIds.Contains(x.Id)).ToListAsync();
+                    if (checkDoctor == null || checkPatient == null || serviceIds.Count == 0)
                     {
                         return false;
                     }
-                    
-                    var schedule = new Schedule()
+                    var schedule = new Schedule
                     {
-                        Id = Guid.NewGuid(),
+                        Id = new Guid(),
+                        DateTimeStamp = DateTimeStamp,
                         DoctorId = DoctorId,
                         PatientId = PatientId,
-                        DateTimeStamp = DateTimeStamp,
-                        Status=Status
+                        Status = Status
                     };
-                    var scheduleServices = new List<ScheduleService>();
-                    foreach (var serviceId in serviceIds)
+                    var scheduleService = new List<ScheduleService>();
+                    foreach (var item in serviceIds)
                     {
-                        scheduleServices.Add(new ScheduleService
+                        scheduleService.Add(new ScheduleService
                         {
-                            Id = Guid.NewGuid(),
-                            ScheduleId = schedule.Id,
-                            ServiceId = serviceId
+                            Id = new Guid(),
+                            ServiceId = item,
+                            ScheduleId = schedule.Id
                         });
                     }
                     db.Schedules.Add(schedule);
-                    db.scheduleServices.AddRange(scheduleServices);
+                    db.scheduleServices.AddRange(scheduleService);
                     await db.SaveChangesAsync();
                 }
                 return true;
             }
             catch (Exception e)
             {
-                return false;
+
+                throw;
             }
         }
-       /* public async Task<ServiceModels> GetServiceInfo(Guid id)
+        public async Task<List<ScheduleOfDoctorModel>> GetScheduleOfDoctor(Guid idDoctor)
         {
             try
             {
                 using (var db = new MyDbContext())
                 {
-                    var ServiceInfor = await db.Services.Where(x => x.Id == id).FirstOrDefaultAsync();
-                    if (ServiceInfor != null)
+                    var getDoctor = await db.UserPeoples.Where(x => x.Id == idDoctor).FirstOrDefaultAsync();
+                    if (getDoctor == null)
                     {
-                        return new ServiceModels
-                        {
-                            Id = id,
-                            Name = ServiceInfor.Name,
-                            Price = ServiceInfor.Price
-                        };
+                        return null;
                     }
-                    return null;
+                    var listScheduleDoctor = await db.Schedules.Where(x => x.DoctorId == idDoctor)
+                        .Join(db.UserPeoples, s => s.PatientId, us=> us.Id, (s,us ) => new { s,us })
+                        .ToListAsync();
+                    var data = new List<ScheduleOfDoctorModel>();
+                    if(listScheduleDoctor.Count()>0)
+                    {
+                        foreach (var item in listScheduleDoctor)
+                        {
+                            data.Add(new ScheduleOfDoctorModel{
+                               Id=item.s.Id ,
+                               DateTimeStamp= item.s.DateTimeStamp,
+                               IdPatient= item.s.PatientId,
+                               NamePatient=item.us.Name
+                            });
+                        }
+                    }
+                    return data;
+
                 }
             }
             catch (Exception e)
@@ -135,6 +145,6 @@ namespace ClinicAPI.Repo
             {
                 return false;
             }
-        }*/
+        }
     }
 }

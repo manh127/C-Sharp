@@ -15,21 +15,30 @@ namespace ClinicAPI.Repo
         {
             try
             {
-                var UserInformation = new UserPeople
-                {
-                    Id = Guid.NewGuid(),
-                    Name = name,
-                    Sex = sex,
-                    YearOfBirth = yearOfBirth,
-                    Phone = phone,
-                    Address = address,
-                    UserName = username,
-                    PassWord = password
-                };
+
+               
                 using (var db = new MyDbContext())
                 {
-                    db.UserPeoples.Add(UserInformation);
-                    await db.SaveChangesAsync();
+                   var checkUser = await db.UserPeoples.Where(x => x.UserName == username).FirstOrDefaultAsync();
+                    if(checkUser != null)
+                    {
+                        return false;
+                    }
+
+                    var insertUser = new UserPeople
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = name,
+                        Sex = sex,
+                        YearOfBirth = yearOfBirth,
+                        Phone = phone,
+                        Address = address,
+                        UserName = username,
+                        PassWord = password
+                    };
+                    db.UserPeoples.Add(insertUser);
+                   await db.SaveChangesAsync();
+
                 }
                 return true;
             }

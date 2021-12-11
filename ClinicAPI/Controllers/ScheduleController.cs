@@ -25,5 +25,10 @@ namespace ClinicAPI.Controllers
         {
             return await scheduleRepository.CreateSchedule(request.DoctorId, request.PatientId, request.DateTimeStamp, request.Status, request.ServiceIds);
         }
+        [HttpPost("get-schedule-of-doctor")]
+        public async Task<List<ScheduleOfDoctorModel>> GetScheduleOfDoctor(Guid idDoctor)
+        {
+            return await scheduleRepository.GetScheduleOfDoctor(idDoctor);
+        }
     }
 }

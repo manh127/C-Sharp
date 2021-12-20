@@ -29,11 +29,15 @@ namespace ClinicAPI.Controllers
         public async Task<ServiceModels> GetRoleInfo(Guid id)
         {   
             var user = await serviceRepository.GetServiceInfo(id);
-
-
-
             return user;
         }
+
+        [HttpPost("get-list-Service")]
+        public async Task<List<ServiceModels>> GetListServiceInfo()
+        {
+            return await serviceRepository.GetListServiceInfo();
+        }
+
         [HttpPost("Update-Service")]
         public async Task<bool> UpdateService(Guid id, string name, string price)
         {
@@ -44,6 +48,5 @@ namespace ClinicAPI.Controllers
         {
             return await serviceRepository.DeleteService(id);
         }
-
     }
 }

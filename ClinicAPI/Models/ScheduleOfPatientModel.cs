@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace ClinicAPI.Models
 {
-    public class ScheduleOfDoctorModel
+    public class ScheduleOfPatientModel
     {
         public Guid Id { get; set; }
-        public string NamePatient { get; set; }
-        public Guid IdPatient { get; set; }
+        public string NameDoctor { get; set; }
+        public Guid IdDoctor { get; set; }
         public long DateTimeStamp { get; set; }
         public string ServiceName { get; set; }
         public string ServicePrice { get; set; }

@@ -93,34 +93,16 @@ namespace ClinicAPI.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(40)");
 
+                    b.Property<byte[]>("ServiceId")
+                        .IsRequired()
+                        .HasColumnType("varbinary(16)");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("TimeDate")
-                        .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
                     b.ToTable("Schedules");
-                });
-
-            modelBuilder.Entity("ClinicAPI.Entity.ScheduleService", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(40)");
-
-                    b.Property<string>("ScheduleId")
-                        .IsRequired()
-                        .HasColumnType("varchar(40)");
-
-                    b.Property<string>("ServiceId")
-                        .IsRequired()
-                        .HasColumnType("varchar(40)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("scheduleServices");
                 });
 
             modelBuilder.Entity("ClinicAPI.Entity.Service", b =>

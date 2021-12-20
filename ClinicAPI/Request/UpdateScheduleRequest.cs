@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 
 namespace ClinicAPI.Request
 {
-    public class CreateScheduleRequest
+    public class UpdateScheduleRequest
     {
+        public Guid Id { get; set; }
         public Guid DoctorId { get; set; }
         public Guid PatientId { get; set; }
         public long DateTimeStamp { get; set; }
+        public int Status { get; set; }
         public Guid ServiceId { get; set; }
-
     }
 }

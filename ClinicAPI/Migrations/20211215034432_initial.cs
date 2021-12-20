@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ClinicAPI.Migrations
 {
-    public partial class Service : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,6 +18,20 @@ namespace ClinicAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DoctorServices", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Revenues",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(40)", nullable: false),
+                    ScheduleId = table.Column<string>(type: "varchar(40)", nullable: false),
+                    ServiceId = table.Column<string>(type: "varchar(40)", nullable: false),
+                    Time = table.Column<DateTime>(type: "datetime", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Revenues", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -40,10 +54,9 @@ namespace ClinicAPI.Migrations
                     Id = table.Column<string>(type: "varchar(40)", nullable: false),
                     DoctorId = table.Column<string>(type: "varchar(40)", nullable: false),
                     PatientId = table.Column<string>(type: "varchar(40)", nullable: false),
-                    ServiceId = table.Column<string>(type: "varchar(40)", nullable: false),
-                    DateTimeStamp = table.Column<long>(type: "bigint", nullable: false),
-                    TimeDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    DateTimeStamp = table.Column<string>(type: "varchar(40)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ServiceId = table.Column<byte[]>(type: "varbinary(16)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,6 +112,9 @@ namespace ClinicAPI.Migrations
         {
             migrationBuilder.DropTable(
                 name: "DoctorServices");
+
+            migrationBuilder.DropTable(
+                name: "Revenues");
 
             migrationBuilder.DropTable(
                 name: "Roles");

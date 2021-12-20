@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ClinicAPI.Repo;
 using ClinicAPI.Entity;
 using ClinicAPI.Models;
+using ClinicAPI.Request;
 
 namespace ClinicAPI.Controllers
 {
@@ -20,9 +21,9 @@ namespace ClinicAPI.Controllers
             userRepository = new UserRepository();
         }
         [HttpPost("Creat-User")]
-        public async Task<bool> Create(string name, string sex, int yearOfBirth, string phone, string address,string username,string password)
+        public async Task<bool> Create([FromBody] CreatUserRequest request)
         {
-            return await userRepository.Create(name, sex, yearOfBirth, phone, address, username, password);
+            return await userRepository.Create(request.Name,request.Sex,request.YearOfBirth,request.Phone,request.Address,request.Username,request.Password);
         }
         [HttpPost("get-User")]
         public async Task<UserModels> GetUserInfo(Guid id)
@@ -30,9 +31,9 @@ namespace ClinicAPI.Controllers
             return await userRepository.GetUserInfo(id);
         }
         [HttpPost("Update-User")]
-        public async Task<bool> Update(Guid id ,string name, string sex, int yearOfBirth, string phone, string address, string username, string password)
+        public async Task<bool> Update([FromBody] UpdateUserRequest request)
         {
-            return await userRepository.UpdateUser(id,name, sex, yearOfBirth, phone, address, username, password);
+            return await userRepository.UpdateUser(request.Id, request.Name, request.Sex,request.YearOfBirth,request.Address,request.Phone);
         }
         [HttpPost("Delete-User")]
         public async Task<bool> Delete(Guid id)
@@ -53,6 +54,11 @@ namespace ClinicAPI.Controllers
         public async Task<bool> AddServiceToDotor(Guid DoctorId, Guid ServiceId)
         {
             return await userRepository.AddServiceToDoctor(DoctorId, ServiceId);
+        }
+        [HttpPost("get-list-doctor-service")]
+        public async Task<List<DoctorModels>> GetListDoctorService(Guid ServiceId)
+        {
+            return await userRepository.GetDoctorOfServices(ServiceId);
         }
     }
 }

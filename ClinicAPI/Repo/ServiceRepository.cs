@@ -56,6 +56,36 @@ namespace ClinicAPI.Repo
                 return null;
             }
         }
+        public async Task<List<ServiceModels>> GetListServiceInfo()
+        {
+            try
+            {
+                using (var db = new MyDbContext())
+                {
+                    var listService = new List<ServiceModels>();
+                    var ListServiceInfor = await db.Services.ToListAsync();
+                    if (ListServiceInfor.Count>0)
+                    {
+                        foreach (var item in ListServiceInfor)
+                        {
+                            var ServiceModels = new ServiceModels
+                            {
+                                Id = item.Id,
+                                Name = item.Name,
+                                Price = item.Price
+                            };
+                            listService.Add(ServiceModels);
+                        }
+                        return listService;
+                    }
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
         public async Task<bool> UpdateService(Guid id, string name, string price)
         {
             try

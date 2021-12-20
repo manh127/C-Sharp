@@ -72,7 +72,7 @@ namespace ClinicAPI.Repo
                 return null;
             }
         }
-        public async Task <bool> UpdateUser(Guid id, string name, string sex, int yearOfBirth, string address, string phone, string username, string password)
+        public async Task <bool> UpdateUser(Guid id, string name, string sex, int yearOfBirth, string address, string phone)
         {
             try
             {
@@ -84,8 +84,6 @@ namespace ClinicAPI.Repo
                     YearOfBirth = yearOfBirth,
                     Address=address,
                     Phone=phone,
-                    UserName=username,
-                    PassWord=password
                 };
                 using (var db = new MyDbContext())
                 {
@@ -97,8 +95,6 @@ namespace ClinicAPI.Repo
                         User.YearOfBirth = yearOfBirth;
                         User.Address = address;
                         User.Phone = phone;
-                        User.UserName = username;
-                        User.PassWord = password;
                         db.UserPeoples.Update(User);
                         await db.SaveChangesAsync();
                     }
@@ -242,6 +238,33 @@ namespace ClinicAPI.Repo
             catch (Exception e)
             {
                 return false;
+            }
+        }
+        public async Task<List<DoctorModels>> GetDoctorOfServices(Guid ServiceId)
+        {
+            try
+            {
+                using( var db = new MyDbContext())
+                {
+                    var listDoctorService = new List<DoctorModels>();
+                    var listDoctorOfServices = await db.DoctorServices.Where(x => x.ServiceId == ServiceId).
+                        Join(db.UserPeoples, du => du.UserId, u => u.Id, (du, u) => new {du,u})
+                        .ToListAsync();
+                    if(listDoctorOfServices.Count>0)
+                    {
+                        foreach (var item in listDoctorOfServices)
+                        {
+                            var doctorModels = new DoctorModels { Id = item.du.UserId, NameDoctro = item.u.Name };
+                            listDoctorService.Add(doctorModels);
+                        }
+                    }
+                    return listDoctorService;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 

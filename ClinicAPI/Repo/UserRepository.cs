@@ -280,9 +280,15 @@ namespace ClinicAPI.Repo
                         return new RepoResponse<List<UserInfomation>> { Status = 0, Msg = "Không tìm thấy quyền " };
                     }
                     var data = new List<UserInfomation>();
-                    var getUserId = await db.UserRoles.Where(x => x.RoleId == checkRole.Id)
-                        .Join(db.UserPeoples,s=>s.UserId,a=>a.Id,(s,a)=>new {s,a}).ToListAsync();
-                    if(getUserId.Count()>0)
+                    var getUserRoleDb = db.UserRoles.Where(x => x.RoleId == checkRole.Id)
+                        .Join(db.UserPeoples,s=>s.UserId,a=>a.Id,(s,a)=>new {s,a});
+                    if(!string.IsNullOrEmpty(request.KeyWord))
+                    {
+                        getUserRoleDb = getUserRoleDb.Where(x => x.a.UserName.Contains(request.KeyWord)||x.a.Name.Contains(request.KeyWord)
+                        ||x.a.Phone.Contains(request.KeyWord));
+                    }
+                    var getUserId = await getUserRoleDb.ToListAsync();
+                    if (getUserId.Count()>0)
                     {
                         foreach (var item in getUserId)
                         {

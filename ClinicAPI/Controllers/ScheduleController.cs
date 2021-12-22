@@ -36,25 +36,37 @@ namespace ClinicAPI.Controllers
             return await scheduleRepository.GetScheduleOfPatient(idPatient, status);
         }
 
-        [HttpPost("get-detail-patient-shedule")]
+        [HttpPost("get-detail-patient-schedule")]
         public async Task<ScheduleOfPatientModel> DetailSchedulePatient(Guid IdShcedule, Guid IdPatient)
         {
             return await scheduleRepository.DetailSchedulePatient(IdShcedule,IdPatient);
         }
-        [HttpPost("get-detail-doctor-shedule")]
+        [HttpPost("get-detail-doctor-schedule")]
         public async Task<ScheduleOfDoctorModel> DetailScheduleDoctor(Guid IdShcedule, Guid IdDoctor)
         {
             return await scheduleRepository.DetailScheduleDoctor(IdShcedule, IdDoctor);
         }
-        [HttpPost("update-shedule")]
+        [HttpPost("update-schedule")]
         public async Task<bool> UpdateSchedule([FromQuery] UpdateScheduleRequest request)
         {
             return await scheduleRepository.UpdateSchedule(request);
         }
-        [HttpPost("delete-shedule")]
+        [HttpPost("delete-schedule")]
         public async Task<bool> DeleteSchedule(Guid Id)
         {
             return await scheduleRepository.DeleteSchedule(Id);
+        }
+
+        [HttpPost("cancel-schedule-patient")]
+        public async Task<RepoResponse<string>> CancelSchedulePatient(CancelSchedulePatient request)
+        {
+            return await scheduleRepository.CancelSchedulePatient(request);
+        }
+
+        [HttpPost("confirm-schedule-doctor")]
+        public async Task<RepoResponse<string>> ConfirmScheduleDoctor(ConfirmScheduleRequestDoctor request)
+        {
+            return await scheduleRepository.ConfirmScheduleDoctor(request);
         }
     }
 }

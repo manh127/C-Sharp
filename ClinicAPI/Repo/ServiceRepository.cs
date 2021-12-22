@@ -10,7 +10,7 @@ namespace ClinicAPI.Repo
 {
     public class ServiceRepository
     {
-        public async Task<bool> CreateService(string name, string price)
+        public async Task<bool> CreateService(string name, double price)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace ClinicAPI.Repo
                 return null;
             }
         }
-        public async Task<bool> UpdateService(Guid id, string name, string price)
+        public async Task<bool> UpdateService(Guid id, string name, double price)
         {
             try
             {

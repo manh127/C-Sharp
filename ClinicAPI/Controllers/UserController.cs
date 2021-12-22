@@ -60,5 +60,10 @@ namespace ClinicAPI.Controllers
         {
             return await userRepository.GetDoctorOfServices(ServiceId);
         }
+        [HttpPost("get-list-user-by-role")]
+        public async Task<RepoResponse<List<UserInfomation>>> GetUserByRole(GetUserByRoleRequest Request)
+        {
+            return await userRepository.GetUser(Request);
+        }
     }
 }

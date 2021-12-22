@@ -21,7 +21,7 @@ namespace ClinicAPI.Controllers
         }
 
         [HttpPost("Creat-Service")]
-        public async Task<bool> CreateService(string name, string price)
+        public async Task<bool> CreateService(string name, double price)
         {
             return await serviceRepository.CreateService(name, price);
         }
@@ -39,7 +39,7 @@ namespace ClinicAPI.Controllers
         }
 
         [HttpPost("Update-Service")]
-        public async Task<bool> UpdateService(Guid id, string name, string price)
+        public async Task<bool> UpdateService(Guid id, string name, double price)
         {
             return await serviceRepository.UpdateService(id, name, price);
         }

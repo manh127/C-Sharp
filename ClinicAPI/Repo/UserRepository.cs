@@ -1,5 +1,6 @@
 ﻿using ClinicAPI.Entity;
 using ClinicAPI.Models;
+using ClinicAPI.Request;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -254,7 +255,7 @@ namespace ClinicAPI.Repo
                     {
                         foreach (var item in listDoctorOfServices)
                         {
-                            var doctorModels = new DoctorModels { Id = item.du.UserId, NameDoctro = item.u.Name };
+                            var doctorModels = new DoctorModels { Id = item.du.UserId, NameDoctor = item.u.Name };
                             listDoctorService.Add(doctorModels);
                         }
                     }
@@ -265,6 +266,44 @@ namespace ClinicAPI.Repo
             {
 
                 throw;
+            }
+        }
+        public async Task<RepoResponse<List<UserInfomation>>> GetUser(GetUserByRoleRequest request)
+        {
+            try
+            {
+                using (var db = new MyDbContext())
+                {
+                    var checkRole = await db.Roles.Where(x => x.Code == request.Code).FirstOrDefaultAsync();
+                    if(checkRole == null )
+                    {
+                        return new RepoResponse<List<UserInfomation>> { Status = 0, Msg = "Không tìm thấy quyền " };
+                    }
+                    var data = new List<UserInfomation>();
+                    var getUserId = await db.UserRoles.Where(x => x.RoleId == checkRole.Id)
+                        .Join(db.UserPeoples,s=>s.UserId,a=>a.Id,(s,a)=>new {s,a}).ToListAsync();
+                    if(getUserId.Count()>0)
+                    {
+                        foreach (var item in getUserId)
+                        {
+                            data.Add(new UserInfomation
+                            {
+                                Id=item.s.UserId,
+                                Address=item.a.Address,
+                                Name=item.a.Name,
+                                Phone= item.a.Phone,
+                                Sex=item.a.Sex,
+                                YearOfBirth=item.a.YearOfBirth
+                            });
+                        }
+                    }
+                    return new RepoResponse<List<UserInfomation>> { Status = 1, Data=data };
+
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
             }
         }
 

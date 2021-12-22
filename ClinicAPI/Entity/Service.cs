@@ -13,6 +13,6 @@ namespace ClinicAPI.Entity
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Price { get; set; }
+        public double Price { get; set; }
     }
 }

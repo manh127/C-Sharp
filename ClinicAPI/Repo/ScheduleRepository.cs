@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static ClinicAPI.Constants;
 
 namespace ClinicAPI.Repo
 {
@@ -282,5 +283,77 @@ namespace ClinicAPI.Repo
                 throw;
             }
         }
+        public async Task<RepoResponse<string>> ConfirmScheduleDoctor(ConfirmScheduleRequestDoctor request)
+        {
+
+            try
+            {
+                using (var db = new MyDbContext())
+                {
+                    var checkSchedule = await db.Schedules.Where(x => x.Id == request.ScheduleID).FirstOrDefaultAsync();
+
+                    if (checkSchedule == null)
+                    {
+                        return new RepoResponse<string> { Status = 0, Msg = "Lịch không tồn tại" };
+                    }
+                    if (checkSchedule.Status == (int)ScheduleStatus.COMFIRM)
+                    {
+                        return new RepoResponse<string> { Status = 0, Msg = "Lịch đã được xác nhận" };
+                    }
+                    if (checkSchedule.Status == (int)ScheduleStatus.PAIED)
+                    {
+                        return new RepoResponse<string> { Status = 0, Msg = "Lịch đã được thanh toán" };
+                    }
+                    if (checkSchedule.Status == (int)ScheduleStatus.CANCELED)
+                    {
+                        return new RepoResponse<string> { Status = 0, Msg = "Lịch đã bị huỷ" };
+                    }
+                    if (request.Status == 1 || request.Status == 3)
+                    {
+                        checkSchedule.Status = request.Status;
+                        db.Schedules.Update(checkSchedule);
+                        await db.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        return new RepoResponse<string> { Status = 0, Msg = "trạng thái không hợp lệ" };
+                    }
+                    return new RepoResponse<string> { Status = 1, Msg = "Xác nhận lịch hẹn thành công" };
+                }
+            }
+            catch (Exception e)
+            {
+                return new RepoResponse<string> { Status = 0, Msg = "Lỗi" };
+            }
+        }
+        public async Task<RepoResponse<string>> CancelSchedulePatient(CancelSchedulePatient request)
+        {
+
+            try
+            {
+                using (var db = new MyDbContext())
+                {
+                    var checkSchedule = await db.Schedules.Where(x => x.Id == request.ScheduleID).FirstOrDefaultAsync();
+
+                    if (checkSchedule == null)
+                    {
+                        return new RepoResponse<string> { Status = 0, Msg = "Lịch không tồn tại" };
+                    }
+                    if (checkSchedule.Status != (int)ScheduleStatus.NOT_CONFIRM )
+                    {
+                        return new RepoResponse<string> { Status=0, Msg = "Không được phép huỷ" };
+                    }
+                    checkSchedule.Status = (int)ScheduleStatus.CANCELED;
+                    db.Schedules.Update(checkSchedule);
+                    await db.SaveChangesAsync();
+                    return new RepoResponse<string> { Status = 1, Msg ="Đã huỷ lịch hẹn thành công" };
+                }
+            }
+            catch (Exception e)
+            {
+                return new RepoResponse<string> { Status = 0, Msg = "Lỗi" };
+            }
+        }
+
     }
 }

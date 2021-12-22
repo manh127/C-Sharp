@@ -8,6 +8,6 @@ namespace ClinicAPI.Models
     public class DoctorModels
     {
         public Guid Id { get; set; }
-        public string NameDoctro { get; set; }
+        public string NameDoctor { get; set; }
     }
 }

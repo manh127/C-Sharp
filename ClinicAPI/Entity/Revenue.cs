@@ -14,8 +14,7 @@ namespace ClinicAPI.Entity
         public Guid Id { get; set; }
         [Column(TypeName = "varchar(40)")]
         public Guid ScheduleId { get; set;}
-        [Column(TypeName = "varchar(40)")]
-        public Guid ServiceId { get; set; }
-        public DateTime Time { get; set; }
+        public long Time { get; set; }
+        public double Price { get; set; }
     }
 }

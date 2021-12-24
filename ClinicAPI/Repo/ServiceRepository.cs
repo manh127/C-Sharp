@@ -10,7 +10,7 @@ namespace ClinicAPI.Repo
 {
     public class ServiceRepository
     {
-        public async Task<bool> CreateService(string name, double price)
+        public async Task<RepoResponse<string>> CreateService(string name, double price)
         {
             try
             {
@@ -25,14 +25,14 @@ namespace ClinicAPI.Repo
                     db.Services.Add(ServiceInformation);
                     await db.SaveChangesAsync();
                 }
-                return true;
+                return new RepoResponse<string> { Status = 1 , Msg = " Tạo dịch vụ thành công "};
             }
             catch (Exception e)
             {
-                return false;
+                return new RepoResponse<string> {Status = 0 , Msg = " Lỗi " };
             }
         }
-        public async Task<ServiceModels> GetServiceInfo(Guid id)
+        public async Task<RepoResponse<ServiceModels>> GetServiceInfo(Guid id)
         {
             try
             {
@@ -41,22 +41,23 @@ namespace ClinicAPI.Repo
                     var ServiceInfor = await db.Services.Where(x => x.Id == id).FirstOrDefaultAsync();
                     if (ServiceInfor != null)
                     {
-                        return new ServiceModels
+                         var data =  new ServiceModels
                         {
                             Id = id,
                             Name = ServiceInfor.Name,
                             Price = ServiceInfor.Price
                         };
+                        return new RepoResponse<ServiceModels> { Status = 1, Data = data };
                     }
-                    return null;
+                    return new RepoResponse<ServiceModels> { Status = 0, Msg = " Không tìm thấy dịch vụ này " };
                 }
             }
             catch (Exception e)
             {
-                return null;
+                return new RepoResponse<ServiceModels> { Status = 0 , Msg = " Lỗi " };
             }
         }
-        public async Task<List<ServiceModels>> GetListServiceInfo()
+        public async Task<RepoResponse<List<ServiceModels>>> GetListServiceInfo()
         {
             try
             {
@@ -76,17 +77,17 @@ namespace ClinicAPI.Repo
                             };
                             listService.Add(ServiceModels);
                         }
-                        return listService;
+                        return new RepoResponse<List<ServiceModels>> { Status = 1 , Data = listService };
                     }
-                    return null;
+                    return new RepoResponse<List<ServiceModels>> { Status = 0 , Msg = " không có dịch vụ nào " };
                 }
             }
             catch (Exception e)
             {
-                return null;
+                return new RepoResponse<List<ServiceModels>> { Status = 0 ,Msg = " Lỗi " };
             }
         }
-        public async Task<bool> UpdateService(Guid id, string name, double price)
+        public async Task<RepoResponse<string>> UpdateService(Guid id, string name, double price)
         {
             try
             {
@@ -101,46 +102,39 @@ namespace ClinicAPI.Repo
                     service = await db.Services.Where(x => x.Id == id).FirstOrDefaultAsync();
                     if (service != null)
                     {
+                        service.Id = id;
                         service.Name = name;
                         service.Price = price;
                         db.Services.Update(service);
                         await db.SaveChangesAsync();
                     }
-                    else
-                    {
-                        return false;
-                    }
+                    return new RepoResponse<string> { Status = 0, Msg = " Không tìm thấy dịch vụ " };
                 }
-                return true;
             }
 
             catch (Exception e)
             {
-                return false;
+                return new RepoResponse<string> { Status = 0, Msg = " Lỗi " };
             }
         }
-        public async Task<bool> DeleteService(Guid id)
+        public async Task<RepoResponse<string>> DeleteService(Guid id)
         {
             try
             {
                 using (var db = new MyDbContext())
                 {
                     var RemoveService = await db.Services.Where(x => x.Id == id).FirstOrDefaultAsync();
-                    if (RemoveService == null)
-                    {
-                        return false;
-                    }
-                    else
+                    if (RemoveService != null)
                     {
                         db.Services.Remove(RemoveService);
                         await db.SaveChangesAsync();
                     }
+                    return new RepoResponse<string> { Status = 0 , Msg = " Không tồn tại dịch vụ này " };
                 }
-                return true;
             }
             catch (Exception)
             {
-                return false;
+                return new RepoResponse<string> { Status = 0, Msg = " Lỗi " };
             }
         }
        

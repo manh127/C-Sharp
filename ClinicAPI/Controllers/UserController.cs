@@ -21,42 +21,42 @@ namespace ClinicAPI.Controllers
             userRepository = new UserRepository();
         }
         [HttpPost("Creat-User")]
-        public async Task<bool> Create([FromBody] CreatUserRequest request)
+        public async Task<RepoResponse<string>> Create([FromBody] CreatUserRequest request)
         {
-            return await userRepository.Create(request.Name,request.Sex,request.YearOfBirth,request.Phone,request.Address,request.Username,request.Password);
+            return await userRepository.Create(request);
         }
         [HttpPost("get-User")]
-        public async Task<UserModels> GetUserInfo(Guid id)
+        public async Task<RepoResponse<UserModels>> GetUserInfo(Guid id)
         {
             return await userRepository.GetUserInfo(id);
         }
         [HttpPost("Update-User")]
-        public async Task<bool> Update([FromBody] UpdateUserRequest request)
+        public async Task<RepoResponse<string>> Update([FromBody] UpdateUserRequest request)
         {
-            return await userRepository.UpdateUser(request.Id, request.Name, request.Sex,request.YearOfBirth,request.Address,request.Phone);
+            return await userRepository.UpdateUser(request);
         }
         [HttpPost("Delete-User")]
-        public async Task<bool> Delete(Guid id)
+        public async Task<RepoResponse<string>> Delete(Guid id)
         {
             return await userRepository.DeleteUser(id);
         }
         [HttpPost("User-Role")]
-        public async Task<bool> UserRole(Guid UserId, Guid RoleId)
+        public async Task<RepoResponse<string>> UserRole(Guid UserId, Guid RoleId)
         {
             return await userRepository.AddUserRole(UserId, RoleId);
         }
         [HttpPost("Get-User-Role")]
-        public async Task <List<UserModels>> GetUserRole(Guid idRole)
+        public async Task <RepoResponse<List<UserModels>>> GetUserRole(Guid idRole)
         {
             return await userRepository.GetUserRole(idRole);
         }
         [HttpPost("add-service-to-doctor")]
-        public async Task<bool> AddServiceToDotor(Guid DoctorId, Guid ServiceId)
+        public async Task<RepoResponse<string>> AddServiceToDotor(Guid DoctorId, Guid ServiceId)
         {
             return await userRepository.AddServiceToDoctor(DoctorId, ServiceId);
         }
         [HttpPost("get-list-doctor-service")]
-        public async Task<List<DoctorModels>> GetListDoctorService(Guid ServiceId)
+        public async Task<RepoResponse<List<DoctorModels>>> GetListDoctorService(Guid ServiceId)
         {
             return await userRepository.GetDoctorOfServices(ServiceId);
         }

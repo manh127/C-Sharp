@@ -12,7 +12,7 @@ namespace ClinicAPI.Repo
 {
     public class UserRepository
     {
-        public async Task<bool> Create(string name, string sex, int yearOfBirth, string phone , string address,string username, string password )
+        public async Task<RepoResponse<string>> Create(CreatUserRequest request )
         {
             try
             {
@@ -20,35 +20,33 @@ namespace ClinicAPI.Repo
                
                 using (var db = new MyDbContext())
                 {
-                   var checkUser = await db.UserPeoples.Where(x => x.UserName == username).FirstOrDefaultAsync();
+                   var checkUser = await db.UserPeoples.Where(x => x.UserName == request.Username).FirstOrDefaultAsync();
                     if(checkUser != null)
                     {
-                        return false;
+                        return new RepoResponse<string> {Status = 0 , Msg = " Đã tồn tại bệnh nhân " };
                     }
-
                     var insertUser = new UserPeople
                     {
                         Id = Guid.NewGuid(),
-                        Name = name,
-                        Sex = sex,
-                        YearOfBirth = yearOfBirth,
-                        Phone = phone,
-                        Address = address,
-                        UserName = username,
-                        PassWord = password
+                        Name = request.Name,
+                        Sex = request.Sex,
+                        YearOfBirth = request.YearOfBirth,
+                        Phone = request.Phone,
+                        Address = request.Address,
+                        UserName = request.Username,
+                        PassWord = request.Password
                     };
                     db.UserPeoples.Add(insertUser);
                    await db.SaveChangesAsync();
-
+                   return new RepoResponse<string> { Status = 1, Msg = " Tạo User thành công " };
                 }
-                return true;
             }
             catch (Exception e )
             {
-                return false;
+                return new RepoResponse<string> { Status = 0, Msg = " Lỗi " };
             }
         }
-        public async Task <UserModels> GetUserInfo(Guid id)
+        public async Task <RepoResponse<UserModels>> GetUserInfo(Guid id)
         {
             try
             {
@@ -57,86 +55,79 @@ namespace ClinicAPI.Repo
                     var UserInfor =await db.UserPeoples.Where(x => x.Id == id).FirstOrDefaultAsync();
                     if (UserInfor != null)
                     {
-                        return new UserModels
+                        var data = new UserModels
                         {
                             Id = id,
                             Name = UserInfor.Name,
                             PassWord=UserInfor.PassWord,
                             UserName=UserInfor.UserName
                         };
+                        return new RepoResponse<UserModels> { Status = 1, Data = data };
                     }
-                    return null;
+                    return new RepoResponse<UserModels> { Status = 0, Msg = " Không tồn tại người dùng này " };
                 }
             }
             catch (Exception e)
             {
-                return null;
+                return new RepoResponse<UserModels> { Status = 0, Msg = " Lỗi " };
             }
         }
-        public async Task <bool> UpdateUser(Guid id, string name, string sex, int yearOfBirth, string address, string phone)
+        public async Task <RepoResponse<string>> UpdateUser(UpdateUserRequest request)
         {
             try
             {
                 var User = new UserPeople
                 {
-                    Id = id,
-                    Name = name,
-                    Sex = sex,
-                    YearOfBirth = yearOfBirth,
-                    Address=address,
-                    Phone=phone,
+                    Id = request.Id,
+                    Name = request.Name,
+                    Sex = request.Sex,
+                    YearOfBirth = request.YearOfBirth,
+                    Address= request.Address,
+                    Phone= request.Phone,
                 };
                 using (var db = new MyDbContext())
                 {
-                    User =await db.UserPeoples.Where(x => x.Id == id).FirstOrDefaultAsync();
+                    User =await db.UserPeoples.Where(x => x.Id == request.Id).FirstOrDefaultAsync();
                     if (User != null)
                     {
-                        User.Name = name;
-                        User.Sex = sex;
-                        User.YearOfBirth = yearOfBirth;
-                        User.Address = address;
-                        User.Phone = phone;
+                        User.Name = request.Name;
+                        User.Sex = request.Sex;
+                        User.YearOfBirth = request.YearOfBirth;
+                        User.Address = request.Address;
+                        User.Phone = request.Phone;
                         db.UserPeoples.Update(User);
                         await db.SaveChangesAsync();
                     }
-                    else
-                    {
-                        return false;
-                    }
+                    return new RepoResponse<string> {Status = 0 ,Msg = " Không có người dùng này " };
                 }
-                return true;
             }
             
             catch (Exception e)
             {
-                return false;
+                return new RepoResponse<string> { Status = 0, Msg = " Lỗi " };
             }
         }
-        public async Task <bool> DeleteUser(Guid id)
+        public async Task <RepoResponse<string>> DeleteUser(Guid id)
         {
             try
             {
                 using (var db = new MyDbContext())
                 {
                     var RemoveUser = await db.UserPeoples.Where(x => x.Id == id).FirstOrDefaultAsync();
-                    if (RemoveUser == null)
+                    if (RemoveUser != null)
                     {
-                        return false;
+                        db.UserPeoples.Remove(RemoveUser);
+                        await db.SaveChangesAsync();
                     }
-                    else
-                    {
-                      db.UserPeoples.Remove(RemoveUser);
-                      await db.SaveChangesAsync();
-                    }
-                }
-                return true;
+                    return new RepoResponse<string> {Status = 0 ,Msg = " Không tồn tại người dùng " }  ;
+                } 
             }
             catch (Exception)
             {
-                return false;
+                return new RepoResponse<string> { Status = 0, Msg = " Lỗi " };
             }
         }
-        public async Task<bool> AddUserRole(Guid UserId , Guid RoleId)
+        public async Task<RepoResponse<string>> AddUserRole(Guid UserId , Guid RoleId)
         {
             try
             {
@@ -145,35 +136,37 @@ namespace ClinicAPI.Repo
                     var user = await db.UserPeoples.Where(x => x.Id == UserId).FirstOrDefaultAsync();
                     var role = await db.Roles.Where(x => x.Id == RoleId).FirstOrDefaultAsync();
 
-                    if (user == null || role == null)
+                    if (user == null )
                     {
-                        return false;
+                        return new RepoResponse<string> {Status = 0 , Msg = " Không tồn tại người dùng " };
+                    }
+                    if ( role == null)
+                    {
+                        return new RepoResponse<string> { Status = 0, Msg = " Không tồn tại quyền " };
                     }
 
                     var userRole = db.UserRoles.Where(x => x.UserId == UserId && x.RoleId == RoleId).FirstOrDefault();
-                    if (userRole != null)
+                    if (userRole == null)
                     {
-                        return false;
+                        var newUserRole = new UserRole()
+                        {
+                            Id = Guid.NewGuid(),
+                            RoleId = RoleId,
+                            UserId = UserId
+                        };
+                        db.UserRoles.Add(newUserRole);
+                        await db.SaveChangesAsync();
                     }
-                    var newUserRole = new UserRole()
-                    {
-                        Id = Guid.NewGuid(),
-                        RoleId=RoleId,
-                        UserId=UserId
-                    };
-                    db.UserRoles.Add(newUserRole);
-                   await db.SaveChangesAsync();
-
+                    return new RepoResponse<string> { Status = 0, Msg = " Đã tồn tại " };
                 }
-                return true;
             }
             catch (Exception)
             {
 
-                return false;
+                return new RepoResponse<string> { Status = 0, Msg = " Đã tồn tại " };
             }
         }
-        public async Task<List<UserModels>> GetUserRole(Guid idRole)
+        public async Task<RepoResponse<List<UserModels>>> GetUserRole(Guid idRole)
         {
             try
             {
@@ -199,15 +192,15 @@ namespace ClinicAPI.Repo
                             });
                         }
                     }
-                    return listUser;
+                    return new RepoResponse<List<UserModels>> {Status =1 , Data =listUser };
                 }
             }
             catch (Exception e)
             {
-                return null;
+                return new RepoResponse<List<UserModels>> { Status = 0, Msg = " Lỗi " };
             }
         }
-        public async Task<bool>AddServiceToDoctor(Guid DoctorId,Guid ServiceId)
+        public async Task<RepoResponse<string>>AddServiceToDoctor(Guid DoctorId,Guid ServiceId)
         {
             try
             {
@@ -216,32 +209,35 @@ namespace ClinicAPI.Repo
                     var user = await db.UserPeoples.Where(x => x.Id == DoctorId).FirstOrDefaultAsync();
                     var service = await db.Services.Where(x => x.Id == ServiceId).FirstOrDefaultAsync();
 
-                    if (user == null || service == null)
+                    if (user == null )
                     {
-                        return false;
+                        return new RepoResponse<string> {Status = 0 , Msg = " Không đúng người dùng " };
+                    }
+                    if ( service == null)
+                    {
+                        return new RepoResponse<string> { Status = 0, Msg = " Không đúng dịch vụ " };
                     }
                     var doctorService = await db.DoctorServices.Where(x => x.ServiceId == ServiceId && x.UserId == DoctorId).FirstOrDefaultAsync();
-                    if (doctorService != null)
+                    if (doctorService == null)
                     {
-                        return false;
+                        var newDoctorService = new DoctorService()
+                        {
+                            Id = Guid.NewGuid(),
+                            UserId = DoctorId,
+                            ServiceId = ServiceId
+                        };
+                        db.DoctorServices.Add(newDoctorService);
+                        await db.SaveChangesAsync();
                     }
-                    var newDoctorService = new DoctorService()
-                    {
-                        Id = Guid.NewGuid(),
-                        UserId=DoctorId,
-                        ServiceId=ServiceId
-                    };
-                    db.DoctorServices.Add(newDoctorService);
-                    await db.SaveChangesAsync();
+                    return new RepoResponse<string> { Status = 0, Msg = " Dịch vụ đã tồn tại " };
                 }
-                return true;
             }
             catch (Exception e)
             {
-                return false;
+                return new RepoResponse<string> { Status = 0, Msg = " Lỗi " };
             }
         }
-        public async Task<List<DoctorModels>> GetDoctorOfServices(Guid ServiceId)
+        public async Task<RepoResponse<List<DoctorModels>>> GetDoctorOfServices(Guid ServiceId)
         {
             try
             {
@@ -258,14 +254,15 @@ namespace ClinicAPI.Repo
                             var doctorModels = new DoctorModels { Id = item.du.UserId, NameDoctor = item.u.Name };
                             listDoctorService.Add(doctorModels);
                         }
+                        return new RepoResponse<List<DoctorModels>> { Status = 1 , Data = listDoctorService };
                     }
-                    return listDoctorService;
+                    return new RepoResponse<List<DoctorModels>> { Status = 0, Msg = " Không có bác sĩ nào  "};
                 }
             }
             catch (Exception)
             {
 
-                throw;
+                return new RepoResponse<List<DoctorModels>> { Status = 0, Msg = " Lỗi " };
             }
         }
         public async Task<RepoResponse<List<UserInfomation>>> GetUser(GetUserByRoleRequest request)

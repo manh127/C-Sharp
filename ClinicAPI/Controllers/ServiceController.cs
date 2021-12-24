@@ -21,30 +21,30 @@ namespace ClinicAPI.Controllers
         }
 
         [HttpPost("Creat-Service")]
-        public async Task<bool> CreateService(string name, double price)
+        public async Task<RepoResponse<string>> CreateService(string name, double price)
         {
             return await serviceRepository.CreateService(name, price);
         }
         [HttpPost("get-Service")]
-        public async Task<ServiceModels> GetRoleInfo(Guid id)
+        public async Task<RepoResponse<ServiceModels>> GetServiceInfo(Guid id)
         {   
             var user = await serviceRepository.GetServiceInfo(id);
             return user;
         }
 
         [HttpPost("get-list-Service")]
-        public async Task<List<ServiceModels>> GetListServiceInfo()
+        public async Task<RepoResponse<List<ServiceModels>>> GetListServiceInfo()
         {
             return await serviceRepository.GetListServiceInfo();
         }
 
         [HttpPost("Update-Service")]
-        public async Task<bool> UpdateService(Guid id, string name, double price)
+        public async Task<RepoResponse<string>> UpdateService(Guid id, string name, double price)
         {
             return await serviceRepository.UpdateService(id, name, price);
         }
         [HttpPost("Delete-Role")]
-        public async Task<bool> DeleteService(Guid id)
+        public async Task<RepoResponse<string>> DeleteService(Guid id)
         {
             return await serviceRepository.DeleteService(id);
         }

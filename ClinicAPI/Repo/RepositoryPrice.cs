@@ -48,7 +48,7 @@ namespace ClinicAPI.Repo
             }
             catch (Exception)
             {
-                throw;
+                return new RepoResponse<string> { Status = 1, Msg = "Lỗi" };
             }
         }
     }

@@ -10,29 +10,31 @@ namespace ClinicAPI.Repo
 {
     public class RoleRepository
     {
-        public async Task<bool> CreateRole(string name, string code)
+        public async Task<RepoResponse<string>> CreateRole(string name, string code)
         {
             try
             {
-                var RoleInformation = new Role
-                {
-                    Id = Guid.NewGuid(),
-                    Name = name,
-                    Code=code
-                };
+                
                 using (var db = new MyDbContext())
+
                 {
+                    var RoleInformation = new Role
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = name,
+                        Code = code
+                    };
                     db.Roles.Add(RoleInformation);
                     await db.SaveChangesAsync();
                 }
-                return true;
+                return new RepoResponse<string> {Status =1 , Msg = " Tạo quyền thành công "  };
             }
             catch (Exception e)
             {
-                return false;
+                return new RepoResponse<string> { Status = 0, Msg = " Lỗi " }; ;
             }
         }
-        public async Task<RoleModels> GetRoleInfo(Guid id)
+        public async Task<RepoResponse<RoleModels>> GetRoleInfo(Guid id)
         {
             try
             {
@@ -41,33 +43,34 @@ namespace ClinicAPI.Repo
                     var RoleInfor = await db.Roles.Where(x => x.Id == id).FirstOrDefaultAsync();
                     if (RoleInfor != null)
                     {
-                        return new RoleModels
+                        var data = new RoleModels
                         {
                             Id = id,
                             Name = RoleInfor.Name,
                             Code = RoleInfor.Code
                         };
+                        return new RepoResponse<RoleModels> { Status = 1, Data = data };
                     }
-                    return null;
+                    return new RepoResponse<RoleModels> { Status = 0, Msg = " Không có quyền này " };
                 }
             }
             catch (Exception e)
             {
-                return null;
+                return new RepoResponse<RoleModels> { Status = 0, Msg = " Lỗi " };
             }
         }
-        public async Task<bool> UpdateRole(Guid id, string name, string code)
+        public async Task<RepoResponse<string>> UpdateRole(Guid id, string name, string code)
         {
             try
             {
-                var role = new Role
-                {
-                    Id = id,
-                    Name = name,
-                    Code = code
-                };
                 using (var db = new MyDbContext())
                 {
+                    var role = new Role
+                    {
+                        Id = id,
+                        Name = name,
+                        Code = code
+                    };
                     role = await db.Roles.Where(x => x.Id == id).FirstOrDefaultAsync();
                     if (role != null)
                     {
@@ -76,41 +79,32 @@ namespace ClinicAPI.Repo
                         db.Roles.Update(role);
                         await db.SaveChangesAsync();
                     }
-                    else
-                    {
-                        return false;
-                    }
+                    return new RepoResponse<string> { Status = 0, Msg = " Không tìm thấy quyền này " };
                 }
-                return true;
             }
-
             catch (Exception e)
             {
-                return false;
+                return new RepoResponse<string> { Status = 0, Msg = " Lỗi" };
             }
         }
-        public async Task<bool> DeleteRole(Guid id)
+        public async Task< RepoResponse<string>> DeleteRole(Guid id)
         {
             try
             {
                 using (var db = new MyDbContext())
                 {
                     var RemoveRole = await db.Roles.Where(x => x.Id == id).FirstOrDefaultAsync();
-                    if (RemoveRole == null)
-                    {
-                        return false;
-                    }
-                    else
+                    if (RemoveRole != null)
                     {
                         db.Roles.Remove(RemoveRole);
                         await db.SaveChangesAsync();
                     }
+                    return new RepoResponse<string> {Status = 0 ,Msg = " Không tìm thấy quyền này " };
                 }
-                return true;
             }
             catch (Exception)
             {
-                return false;
+                return new RepoResponse<string> { Status = 0, Msg = " Lỗi " };
             }
         }
     }

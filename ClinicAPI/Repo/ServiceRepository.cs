@@ -14,14 +14,15 @@ namespace ClinicAPI.Repo
         {
             try
             {
-                var ServiceInformation = new Service
-                {
-                    Id = Guid.NewGuid(),
-                    Name = name,
-                    Price = price
-                };
+               
                 using (var db = new MyDbContext())
                 {
+                    var ServiceInformation = new Service
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = name,
+                        Price = price
+                    };
                     db.Services.Add(ServiceInformation);
                     await db.SaveChangesAsync();
                 }

@@ -12,22 +12,25 @@ namespace ClinicAPI.Repo
 {
     public class UserRepository
     {
-        public async Task<RepoResponse<string>> Create(CreatUserRequest request )
+        public async Task<RepoResponse<Guid>> Create(CreatUserRequest request )
         {
             try
-            {
-
-               
+            { 
                 using (var db = new MyDbContext())
                 {
                    var checkUser = await db.UserPeoples.Where(x => x.UserName == request.Username).FirstOrDefaultAsync();
                     if(checkUser != null)
                     {
-                        return new RepoResponse<string> {Status = 0 , Msg = " Đã tồn tại bệnh nhân " };
+                        return new RepoResponse<Guid> {Status = 0 , Msg = " Đã tồn tại bệnh nhân " };
                     }
                     var insertUser = new UserPeople
                     {
                         Id = Guid.NewGuid(),
+                        IdentityCard=request.IdentityCard,
+                        Job=request.Job,
+                        Avatar=request.Avatar,
+                        Note1=request.Note1,
+                        Note2=request.Note2,
                         Name = request.Name,
                         Sex = request.Sex,
                         YearOfBirth = request.YearOfBirth,
@@ -38,12 +41,12 @@ namespace ClinicAPI.Repo
                     };
                     db.UserPeoples.Add(insertUser);
                    await db.SaveChangesAsync();
-                   return new RepoResponse<string> { Status = 1, Msg = " Tạo User thành công " };
+                   return new RepoResponse<Guid> { Status = 1, Msg = " Tạo User thành công " ,Data=insertUser.Id};
                 }
             }
             catch (Exception e )
             {
-                return new RepoResponse<string> { Status = 0, Msg = " Lỗi " };
+                return new RepoResponse<Guid> { Status = 0, Msg = " Lỗi " };
             }
         }
         public async Task <RepoResponse<UserModels>> GetUserInfo(Guid id)
@@ -77,13 +80,18 @@ namespace ClinicAPI.Repo
             try
             {
                 var User = new UserPeople
-                {
-                    Id = request.Id,
+                {   
+                    Id=request.Id,
+                    IdentityCard = request.IdentityCard,
+                    Job = request.Job,
+                    Avatar = request.Avatar,
+                    Note1 = request.Note1,
+                    Note2 = request.Note2,
                     Name = request.Name,
                     Sex = request.Sex,
                     YearOfBirth = request.YearOfBirth,
-                    Address= request.Address,
-                    Phone= request.Phone,
+                    Phone = request.Phone,
+                    Address = request.Address,
                 };
                 using (var db = new MyDbContext())
                 {
@@ -95,6 +103,10 @@ namespace ClinicAPI.Repo
                         User.YearOfBirth = request.YearOfBirth;
                         User.Address = request.Address;
                         User.Phone = request.Phone;
+                        User.IdentityCard = request.IdentityCard;
+                        User.Job = request.Job;
+                        User.Note1 = request.Note1;
+                        User.Note2 = request.Note2;
                         db.UserPeoples.Update(User);
                         await db.SaveChangesAsync();
                     }

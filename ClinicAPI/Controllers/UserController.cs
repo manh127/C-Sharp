@@ -21,7 +21,7 @@ namespace ClinicAPI.Controllers
             userRepository = new UserRepository();
         }
         [HttpPost("Creat-User")]
-        public async Task<RepoResponse<string>> Create([FromBody] CreatUserRequest request)
+        public async Task<RepoResponse<Guid>> Create([FromBody] CreatUserRequest request)
         {
             return await userRepository.Create(request);
         }

@@ -95,7 +95,7 @@ namespace ClinicAPI.Repo
                 };
                 using (var db = new MyDbContext())
                 {
-                    User =await db.UserPeoples.Where(x => x.Id == request.Id).FirstOrDefaultAsync();
+                    User = await db.UserPeoples.Where(x => x.Id == request.Id).FirstOrDefaultAsync();
                     if (User != null)
                     {
                         User.Name = request.Name;
@@ -109,8 +109,12 @@ namespace ClinicAPI.Repo
                         User.Note2 = request.Note2;
                         db.UserPeoples.Update(User);
                         await db.SaveChangesAsync();
+                        return new RepoResponse<string> { Status = 1, Msg = "update thanh công " };
                     }
-                    return new RepoResponse<string> {Status = 0 ,Msg = " Không có người dùng này " };
+                    else
+                    {
+                        return new RepoResponse<string> { Status = 0, Msg = " Không có người dùng này " };
+                    }
                 }
             }
             

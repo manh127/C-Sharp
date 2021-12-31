@@ -43,8 +43,7 @@ namespace ClinicAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ClinicAPI v1"));
             }
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/data/swagger/v1/swagger.json", "ClinicAPI v1"));
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

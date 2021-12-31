@@ -94,8 +94,12 @@ namespace ClinicAPI.Repo
                         Medicine.Unit = request.Unit;
                         db.Prescriptions.Update(Medicine);
                         await db.SaveChangesAsync();
+                        return new RepoResponse<string> { Status = 1, Msg = " update thành công " };
                     }
-                    return new RepoResponse<string> { Status = 0, Msg = " Không tồn tại loại thuốc này " };
+                    else
+                    {
+                        return new RepoResponse<string> { Status = 0, Msg = " Không tồn tại loại thuốc này " };
+                    }
                 }
             }
 

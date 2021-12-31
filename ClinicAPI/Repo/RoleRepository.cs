@@ -78,8 +78,9 @@ namespace ClinicAPI.Repo
                         role.Code = code;
                         db.Roles.Update(role);
                         await db.SaveChangesAsync();
+                        return new RepoResponse<string> { Status = 1, Msg = " update thành công " };
                     }
-                    return new RepoResponse<string> { Status = 0, Msg = " Không tìm thấy quyền này " };
+                    else { return new RepoResponse<string> { Status = 0, Msg = " Không tìm thấy quyền này " }; }
                 }
             }
             catch (Exception e)

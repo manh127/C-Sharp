@@ -244,8 +244,10 @@ namespace ClinicAPI.Repo
                         };
                         db.DoctorServices.Add(newDoctorService);
                         await db.SaveChangesAsync();
+                        return new RepoResponse<string> { Status = 1, Msg = " Thành công" };
                     }
-                    return new RepoResponse<string> { Status = 0, Msg = " Dịch vụ đã tồn tại " };
+                    else 
+                    { return new RepoResponse<string> { Status = 0, Msg = " Dịch vụ đã tồn tại " }; }
                 }
             }
             catch (Exception e)
@@ -307,7 +309,7 @@ namespace ClinicAPI.Repo
                         {
                             data.Add(new UserInfomation
                             {
-                                Id=item.s.UserId,
+                                Id=item.s.UserId, 
                                 Address=item.a.Address,
                                 Name=item.a.Name,
                                 Phone= item.a.Phone,

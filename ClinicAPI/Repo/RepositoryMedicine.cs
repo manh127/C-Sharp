@@ -22,7 +22,7 @@ namespace ClinicAPI.Repo
                     {
                         return new RepoResponse<Guid> { Status = 0, Msg = " Đã tồn tại thuốc này " };
                     }
-                    var insertMedicine = new Prescription
+                    var insertMedicine = new Medicine
                     {
                         IdMedicine = Guid.NewGuid(),
                         NameMedicine = request.NameMedicine,
@@ -76,7 +76,7 @@ namespace ClinicAPI.Repo
                 using (var db = new MyDbContext())
                 {
 
-                    var Medicine = new Prescription
+                    var Medicine = new Medicine
                     {
                         IdMedicine = request.IdMedicine,
                         NameMedicine = request.NameMedicine,

@@ -41,9 +41,9 @@ namespace ClinicAPI.Controllers
             return await userRepository.DeleteUser(id);
         }
         [HttpPost("User-Role")]
-        public async Task<RepoResponse<string>> UserRole(Guid UserId, Guid RoleId)
+        public async Task<RepoResponse<string>> UserRole([FromBody] UserRoleReq userRoleReq)
         {
-            return await userRepository.AddUserRole(UserId, RoleId);
+            return await userRepository.AddUserRole(userRoleReq);
         }
         [HttpPost("Get-User-Role")]
         public async Task <RepoResponse<List<UserModels>>> GetUserRole(Guid idRole)
@@ -56,7 +56,7 @@ namespace ClinicAPI.Controllers
             return await userRepository.AddServiceToDoctor(DoctorId, ServiceId);
         }
         [HttpPost("get-list-doctor-service")]
-        public async Task<RepoResponse<List<DoctorModels>>> GetListDoctorService(Guid ServiceId)
+        public async Task<RepoResponse<List<DoctorModels>>> GetListDoctorService(Service ServiceId)
         {
             return await userRepository.GetDoctorOfServices(ServiceId);
         }

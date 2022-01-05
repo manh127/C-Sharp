@@ -22,7 +22,7 @@ namespace ClinicAPI.Repo
                     {
                         return new RepoResponse<Guid> { Status = 0, Msg = " Đã tồn tại thuốc này " };
                     }
-                    var insertMedicine = new Medicine
+                    var insertMedicine = new Prescription
                     {
                         IdMedicine = Guid.NewGuid(),
                         NameMedicine = request.NameMedicine,
@@ -76,7 +76,7 @@ namespace ClinicAPI.Repo
                 using (var db = new MyDbContext())
                 {
 
-                    var Medicine = new Medicine
+                    var Medicine = new Prescription
                     {
                         IdMedicine = request.IdMedicine,
                         NameMedicine = request.NameMedicine,
@@ -94,12 +94,8 @@ namespace ClinicAPI.Repo
                         Medicine.Unit = request.Unit;
                         db.Prescriptions.Update(Medicine);
                         await db.SaveChangesAsync();
-                        return new RepoResponse<string> { Status = 1, Msg = " update thành công " };
                     }
-                    else
-                    {
-                        return new RepoResponse<string> { Status = 0, Msg = " Không tồn tại loại thuốc này " };
-                    }
+                    return new RepoResponse<string> { Status = 0, Msg = " Không tồn tại loại thuốc này " };
                 }
             }
 

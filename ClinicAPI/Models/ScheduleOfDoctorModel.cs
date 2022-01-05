@@ -10,7 +10,7 @@ namespace ClinicAPI.Models
         public Guid Id { get; set; }
         public string NamePatient { get; set; }
         public Guid IdPatient { get; set; }
-        public long DateTimeStamp { get; set; }
+        public string DateTimeStamp { get; set; }
         public string ServiceName { get; set; }
         public double ServicePrice { get; set; }
     }

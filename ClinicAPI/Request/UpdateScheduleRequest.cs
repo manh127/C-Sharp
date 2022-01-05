@@ -10,7 +10,7 @@ namespace ClinicAPI.Request
         public Guid Id { get; set; }
         public Guid DoctorId { get; set; }
         public Guid PatientId { get; set; }
-        public long DateTimeStamp { get; set; }
+        public string DateTimeStamp { get; set; }
         public int Status { get; set; }
         public Guid ServiceId { get; set; }
     }

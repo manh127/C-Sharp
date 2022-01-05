@@ -12,12 +12,11 @@ namespace ClinicAPI.Entity
     {
         [Column(TypeName = "varchar(40)")]
         [Key]
-        public Guid Id { get; set; }
-        [Column(TypeName = "varchar(40)")]
-        public Guid? IdSchedule { get; set; }
-        public string Name { get; set; }
-        public string Code { get; set; }
-        public double TimeStamp { get; set; }
-        
+        public Guid IdMedicine { get; set; }
+        public string NameMedicine { get; set; }
+        public string UseMedicine { get; set; }
+        public string Unit { get; set; }
+        public string Quantily { get; set; }
+        public string PriceMedicine { get; set; }
     }
 }

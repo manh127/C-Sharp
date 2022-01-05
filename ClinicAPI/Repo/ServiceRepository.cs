@@ -66,7 +66,7 @@ namespace ClinicAPI.Repo
                 {
                     var listService = new List<ServiceModels>();
                     var ListServiceInfor = await db.Services.ToListAsync();
-                    if (ListServiceInfor.Count > 0)
+                    if (ListServiceInfor.Count>0)
                     {
                         foreach (var item in ListServiceInfor)
                         {
@@ -78,12 +78,9 @@ namespace ClinicAPI.Repo
                             };
                             listService.Add(ServiceModels);
                         }
-                        return new RepoResponse<List<ServiceModels>> { Status = 1, Data = listService };
+                        return new RepoResponse<List<ServiceModels>> { Status = 1 , Data = listService };
                     }
-                    else
-                    {
-                        return new RepoResponse<List<ServiceModels>> { Status = 0, Msg = " không có dịch vụ nào " };
-                    }
+                    return new RepoResponse<List<ServiceModels>> { Status = 0 , Msg = " không có dịch vụ nào " };
                 }
             }
             catch (Exception e)
@@ -111,12 +108,8 @@ namespace ClinicAPI.Repo
                         service.Price = price;
                         db.Services.Update(service);
                         await db.SaveChangesAsync();
-                        return new RepoResponse<string> { Status = 1, Msg = " update thành công " };
                     }
-                    else
-                    {
-                        return new RepoResponse<string> { Status = 0, Msg = " Không tìm thấy dịch vụ " };
-                    }
+                    return new RepoResponse<string> { Status = 0, Msg = " Không tìm thấy dịch vụ " };
                 }
             }
 

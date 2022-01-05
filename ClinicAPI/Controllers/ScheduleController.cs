@@ -21,7 +21,7 @@ namespace ClinicAPI.Controllers
         }
 
         [HttpPost("creat-shedule")]
-        public async Task<RepoResponse<string>> CreateSchedule([FromQuery] CreateScheduleRequest request)
+        public async Task<RepoResponse<string>> CreateSchedule([FromBody] CreateScheduleRequest request)
         {
             return await scheduleRepository.CreateSchedule(request);
         }
@@ -67,6 +67,12 @@ namespace ClinicAPI.Controllers
         public async Task<RepoResponse<string>> ConfirmScheduleDoctor(ConfirmScheduleRequestDoctor request)
         {
             return await scheduleRepository.ConfirmScheduleDoctor(request);
+        }
+
+        [HttpPost("GetList-schedule")]
+        public async Task<RepoResponse<List<CreateScheduleRequest>>> GetListSchedule()
+        {
+            return await scheduleRepository.GetListSchedule();
         }
     }
 }

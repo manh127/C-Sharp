@@ -7,10 +7,11 @@ namespace ClinicAPI.Request
 {
     public class CreateScheduleRequest
     {
-        public Guid DoctorId { get; set; }
-        public Guid PatientId { get; set; }
-        public long DateTimeStamp { get; set; }
-        public Guid ServiceId { get; set; }
-
+        public string DoctorId { get; set; }
+        public string PatientId { get; set; }
+        public string DateTimeStamp { get; set; }
+        public string ServiceId { get; set; }
+        public int Status { get; set; }
+        public string Id { get; set; }
     }
 }

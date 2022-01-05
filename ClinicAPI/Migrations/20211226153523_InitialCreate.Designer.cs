@@ -2,14 +2,16 @@
 using ClinicAPI.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ClinicAPI.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211226153523_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,32 +35,6 @@ namespace ClinicAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DoctorServices");
-                });
-
-            modelBuilder.Entity("ClinicAPI.Entity.Prescription", b =>
-                {
-                    b.Property<string>("IdMedicine")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(40)");
-
-                    b.Property<string>("NameMedicine")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PriceMedicine")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Quantily")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Unit")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UseMedicine")
-                        .HasColumnType("text");
-
-                    b.HasKey("IdMedicine");
-
-                    b.ToTable("Prescriptions");
                 });
 
             modelBuilder.Entity("ClinicAPI.Entity.Revenue", b =>
@@ -106,6 +82,7 @@ namespace ClinicAPI.Migrations
                         .HasColumnType("varchar(40)");
 
                     b.Property<string>("DateTimeStamp")
+                        .IsRequired()
                         .HasColumnType("varchar(40)");
 
                     b.Property<string>("DoctorId")
@@ -149,27 +126,12 @@ namespace ClinicAPI.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(999999)");
+                        .HasColumnType("varchar(40)");
 
                     b.Property<string>("Address")
                         .HasColumnType("text");
 
-                    b.Property<string>("Avatar")
-                        .HasColumnType("text");
-
-                    b.Property<string>("IdentityCard")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Job")
-                        .HasColumnType("text");
-
                     b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Note1")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Note2")
                         .HasColumnType("text");
 
                     b.Property<string>("PassWord")

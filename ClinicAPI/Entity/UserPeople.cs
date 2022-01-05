@@ -9,7 +9,7 @@ namespace ClinicAPI.Entity
 {
     public class UserPeople
     {
-        [Column(TypeName = "varchar(40)")]
+        [Column(TypeName = "varchar(100)")]
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }

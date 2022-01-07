@@ -27,14 +27,14 @@ namespace ClinicAPI.Repo
                     }
                    
                     var listIdMedicine = request.Medicines.Select(x => x.IdMedicine).ToList();
-                    var checkMedicine = await db.Prescriptions.Where(x => listIdMedicine.Contains(x.IdMedicine)).ToListAsync();
+                    var checkMedicine = await db.Prescriptions.Where(x => listIdMedicine.Contains((Guid)x.IdMedicine)).ToListAsync();
                     if(checkMedicine.Count()!=listIdMedicine.Count())
                     {
                         return new RepoResponse<Guid> { Status = 0,Msg =" Có thuốc không tồn tại " };
                     }
                         var prescriptions = new Prescription
                         {
-                            IdSchedule=request.IdSchedule,
+                            IdSchedule= request.IdSchedule ,
                             Id =  Guid.NewGuid(),
                             Code = request.Code,
                             Name = request.Name,
@@ -52,8 +52,8 @@ namespace ClinicAPI.Repo
                             };
                             listInsertMedicinePrescription.Add(medicinePre);
                         }
-                        db.PreMedicine.AddRange(listInsertMedicinePrescription);
-                        db.MedicinePrescriptions.Add(prescriptions);
+                        //db.PreMedicine.AddRange(listInsertMedicinePrescription);
+                        //db.MedicinePrescriptions.Add(prescriptions);
                         await db.SaveChangesAsync();
                         return new RepoResponse<Guid> { Status = 1, Data = prescriptions.Id };
                     
@@ -71,7 +71,7 @@ namespace ClinicAPI.Repo
                 using (var db = new MyDbContext())
                 {
                     var data = new List<GetPrescription>();
-                    var getPrescriptionDb = db.MedicinePrescriptions.Where(x => 1 == 1);
+                    var getPrescriptionDb = db.Prescriptions.Where(x => 1 == 1);
                     if (!string.IsNullOrEmpty(request.KeyWord))
                     {
                         getPrescriptionDb = getPrescriptionDb.Where(x => x.Code.Contains(request.KeyWord) || x.Name.Contains(request.KeyWord));
@@ -110,21 +110,21 @@ namespace ClinicAPI.Repo
                 throw;
             }
         }
-        public async Task<RepoResponse<GetDetailPrescription>> GetDetailPrescription(Guid Id)
-        {
-            try
-            {
-                using (var db = new MyDbContext())
-                {
+        //public async Task<RepoResponse<GetDetailPrescription>> GetDetailPrescription(Guid Id)
+        //{
+        //    try
+        //    {
+        //        using (var db = new MyDbContext())
+        //        {
 
-                }
-            }
-            catch (Exception)
-            {
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
 
     }
 }

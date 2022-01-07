@@ -21,5 +21,6 @@ namespace ClinicAPI.Entity
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Revenue> Revenues { get; set; }
         public DbSet<Prescription> Prescriptions { get; set; }
+  
     }
 }

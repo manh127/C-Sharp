@@ -33,7 +33,7 @@ namespace ClinicAPI.Repo
                     };
                     db.Prescriptions.Add(insertMedicine);
                     await db.SaveChangesAsync();
-                    return new RepoResponse<Guid> { Status = 1, Msg = " Tạo Medicine thành công ", Data = insertMedicine.IdMedicine };
+                    return new RepoResponse<Guid> { Status = 1, Msg = " Tạo Medicine thành công ", Data = insertMedicine.IdMedicine ?? Guid.NewGuid() };
                 }
             }
             catch (Exception e)
@@ -95,7 +95,7 @@ namespace ClinicAPI.Repo
                         db.Prescriptions.Update(Medicine);
                         await db.SaveChangesAsync();
                     }
-                    return new RepoResponse<string> { Status = 0, Msg = " Không tồn tại loại thuốc này " };
+                    return new RepoResponse<string> { Status = 0, Msg = "Sửa thông tin thuốc thành công" };
                 }
             }
 
@@ -116,7 +116,7 @@ namespace ClinicAPI.Repo
                         db.Prescriptions.Remove(RemoveMedicine);
                         await db.SaveChangesAsync();
                     }
-                    return new RepoResponse<string> { Status = 0, Msg = " Không tồn tại thuốc này " };
+                    return new RepoResponse<string> { Status = 0, Msg = " Xóa thuốc thành công " };
                 }
             }
             catch (Exception)
@@ -138,7 +138,7 @@ namespace ClinicAPI.Repo
                         {
                             var MedicineModel = new MedicineModels
                             {
-                                IdMedicine = item.IdMedicine,
+                                IdMedicine = (Guid)item.IdMedicine,
                                 NameMedicine = item.NameMedicine,
                                 PriceMedicine = item.PriceMedicine,
                                 Quantily = item.Quantily,

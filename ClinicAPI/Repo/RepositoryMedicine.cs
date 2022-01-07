@@ -17,12 +17,12 @@ namespace ClinicAPI.Repo
             {
                 using (var db = new MyDbContext())
                 {
-                   // var checkUser = await db.Prescriptions.Where(x => x.NameMedicine == request.NameMedicine).FirstOrDefaultAsync();
-                    //if (checkUser != null)
-                    //{
-                    //    return new RepoResponse<Guid> { Status = 0, Msg = " Đã tồn tại thuốc này " };
-                    //}
-                    var insertMedicine = new Prescription
+                    var checkUser = await db.medicines.Where(x => x.NameMedicine == request.NameMedicine).FirstOrDefaultAsync();
+                    if (checkUser != null)
+                    {
+                        return new RepoResponse<Guid> { Status = 0, Msg = " Đã tồn tại thuốc này " };
+                    }
+                    var insertMedicine = new Medicine
                     {
                         IdMedicine = Guid.NewGuid(),
                         NameMedicine = request.NameMedicine,
@@ -31,9 +31,9 @@ namespace ClinicAPI.Repo
                         Unit = request.Unit,
                         UseMedicine = request.UseMedicine
                     };
-                    db.Prescriptions.Add(insertMedicine);
+                    db.medicines.Add(insertMedicine);
                     await db.SaveChangesAsync();
-                    return new RepoResponse<Guid> { Status = 1, Msg = " Tạo Medicine thành công ", Data = insertMedicine.IdMedicine ?? Guid.NewGuid() };
+                    return new RepoResponse<Guid> { Status = 1, Msg = " Tạo Medicine thành công ", Data = insertMedicine.IdMedicine };
                 }
             }
             catch (Exception e)
@@ -47,7 +47,7 @@ namespace ClinicAPI.Repo
             {
                 using (var db = new MyDbContext())
                 {
-                    var MedicineInfor = await db.Prescriptions.Where(x => x.IdMedicine == id).FirstOrDefaultAsync();
+                    var MedicineInfor = await db.medicines.Where(x => x.IdMedicine == id).FirstOrDefaultAsync();
                     if (MedicineInfor != null)
                     {
                         var data = new MedicineModels
@@ -55,7 +55,7 @@ namespace ClinicAPI.Repo
                             IdMedicine = id,
                             NameMedicine = MedicineInfor.NameMedicine,
                             UseMedicine = MedicineInfor.UseMedicine,
-                            Quantily = MedicineInfor.Quantily,
+                            Quantily = MedicineInfor.Quantily.ToString(),
                             Unit = MedicineInfor.Unit,
                             PriceMedicine = MedicineInfor.PriceMedicine
                         };
@@ -76,7 +76,7 @@ namespace ClinicAPI.Repo
                 using (var db = new MyDbContext())
                 {
 
-                    var Medicine = new Prescription
+                    var Medicine_ = new Medicine
                     {
                         IdMedicine = request.IdMedicine,
                         NameMedicine = request.NameMedicine,
@@ -85,14 +85,14 @@ namespace ClinicAPI.Repo
                         Unit = request.Unit,
                         UseMedicine = request.UseMedicine
                     };
-                    Medicine = await db.Prescriptions.Where(x => x.IdMedicine == request.IdMedicine).FirstOrDefaultAsync();
-                    if (Medicine != null)
+                    Medicine_ = await db.medicines.Where(x => x.IdMedicine == request.IdMedicine).FirstOrDefaultAsync();
+                    if (Medicine_ != null)
                     {
-                        Medicine.NameMedicine = request.NameMedicine;
-                        Medicine.PriceMedicine = request.PriceMedicine;
-                        Medicine.Quantily = request.Quantily;
-                        Medicine.Unit = request.Unit;
-                        db.Prescriptions.Update(Medicine);
+                        Medicine_.NameMedicine = request.NameMedicine;
+                        Medicine_.PriceMedicine = request.PriceMedicine;
+                        Medicine_.Quantily = request.Quantily;
+                        Medicine_.Unit = request.Unit;
+                        db.medicines.Update(Medicine_);
                         await db.SaveChangesAsync();
                     }
                     return new RepoResponse<string> { Status = 0, Msg = "Sửa thông tin thuốc thành công" };
@@ -110,10 +110,10 @@ namespace ClinicAPI.Repo
             {
                 using (var db = new MyDbContext())
                 {
-                    var RemoveMedicine = await db.Prescriptions.Where(x => x.IdMedicine == id).FirstOrDefaultAsync();
+                    var RemoveMedicine = await db.medicines.Where(x => x.IdMedicine == id).FirstOrDefaultAsync();
                     if (RemoveMedicine != null)
                     {
-                        db.Prescriptions.Remove(RemoveMedicine);
+                        db.medicines.Remove(RemoveMedicine);
                         await db.SaveChangesAsync();
                     }
                     return new RepoResponse<string> { Status = 0, Msg = " Xóa thuốc thành công " };
@@ -131,7 +131,7 @@ namespace ClinicAPI.Repo
                 using (var db = new MyDbContext())
                 {
                     var listMedicine = new List<MedicineModels>();
-                    var listMidecineInfor = await db.Prescriptions.ToListAsync();
+                    var listMidecineInfor = await db.medicines.ToListAsync();
                     if(listMidecineInfor.Count>0)
                     {
                         foreach (var item in listMidecineInfor)

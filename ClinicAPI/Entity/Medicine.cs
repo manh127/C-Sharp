@@ -16,7 +16,7 @@ namespace ClinicAPI.Entity
         public string NameMedicine { get; set; }
         public string UseMedicine { get; set; }
         public string Unit { get; set; }
-        public int Quantily { get; set; }
+        public string Quantily { get; set; }
         public string PriceMedicine { get; set; }
     }
 }

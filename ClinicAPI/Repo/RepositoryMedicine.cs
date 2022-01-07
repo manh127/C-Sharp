@@ -17,11 +17,11 @@ namespace ClinicAPI.Repo
             {
                 using (var db = new MyDbContext())
                 {
-                    var checkUser = await db.Prescriptions.Where(x => x.NameMedicine == request.NameMedicine).FirstOrDefaultAsync();
-                    if (checkUser != null)
-                    {
-                        return new RepoResponse<Guid> { Status = 0, Msg = " Đã tồn tại thuốc này " };
-                    }
+                   // var checkUser = await db.Prescriptions.Where(x => x.NameMedicine == request.NameMedicine).FirstOrDefaultAsync();
+                    //if (checkUser != null)
+                    //{
+                    //    return new RepoResponse<Guid> { Status = 0, Msg = " Đã tồn tại thuốc này " };
+                    //}
                     var insertMedicine = new Prescription
                     {
                         IdMedicine = Guid.NewGuid(),

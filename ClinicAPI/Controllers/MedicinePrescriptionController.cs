@@ -24,6 +24,6 @@ namespace ClinicAPI.Controllers
         {
             return await repositoryPrescription.CreatePrescription(request);
         }
-       
+     
     }
 }

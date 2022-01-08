@@ -30,5 +30,10 @@ namespace ClinicAPI.Controllers
         {
             return await repositoryPrice.GetSchedulePrice(request);
         }
+        [HttpPost("Information-patient-schedule")]
+        public async Task<RepoResponse<GetInformationPatientModels>> GetInformationPatientPrice(GetInfomationPatientt request)
+        {
+            return await repositoryPrice.GetInformationPatientPrice(request);
+        }
     }
 }

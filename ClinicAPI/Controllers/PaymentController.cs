@@ -25,5 +25,10 @@ namespace ClinicAPI.Controllers
         {
             return await repositoryPrice.SchedulePayment(request);
         }
+        [HttpPost("Price-schedule-Medicine")]
+        public async Task<RepoResponse<double>> GetSchedulePrice(PriceRequest request)
+        {
+            return await repositoryPrice.GetSchedulePrice(request);
+        }
     }
 }

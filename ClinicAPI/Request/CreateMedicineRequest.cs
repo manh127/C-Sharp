@@ -7,11 +7,19 @@ namespace ClinicAPI.Request
 {
     public class CreateMedicineRequest
     {
+<<<<<<< HEAD
        // public Guid IdMedicine { get; set; }
         public string NameMedicine { get; set; }
         public string UseMedicine { get; set; }
         public string Unit { get; set; }
         public string Quantily { get; set; }
+=======
+        public Guid IdMedicine { get; set; }
+        public string NameMedicine { get; set; }
+        public string UseMedicine { get; set; }
+        public string Unit { get; set; }
+        public int Quantily { get; set; }
+>>>>>>> 38e20eabbc43b4bb1c7983053b97dcf501223b5b
         public string PriceMedicine { get; set; }
         
     }

@@ -11,7 +11,7 @@ namespace ClinicAPI.Entity
         public MyDbContext() { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL(@"Server=localhost;Database=dangkykham;Uid=root;Pwd=dang1999;CharSet=utf8;");
+            optionsBuilder.UseMySQL(@"Server=localhost;Database=themanh1999;Uid=root;Pwd=12071999");
         }
         public DbSet<UserPeople> UserPeoples { get; set; }
         public DbSet<Role> Roles{ get; set; }
@@ -21,6 +21,10 @@ namespace ClinicAPI.Entity
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Revenue> Revenues { get; set; }
         public DbSet<Prescription> Prescriptions { get; set; }
+<<<<<<< HEAD
         public DbSet<Medicine> medicines { get; set; }
+        public DbSet<MedicinePrescription> PreMedicine { get; set; }
+=======
+>>>>>>> 38e20eabbc43b4bb1c7983053b97dcf501223b5b
     }
 }

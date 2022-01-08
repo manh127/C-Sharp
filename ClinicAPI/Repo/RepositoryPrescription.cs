@@ -25,10 +25,10 @@ namespace ClinicAPI.Repo
                             return new RepoResponse<Guid> { Status = 0, Msg = "Không tồn tại lịch khám" };
                         }
                     }
-                   
+
                     var listIdMedicine = request.Medicines.Select(x => x.IdMedicine).ToList();
-                    var checkMedicine = await db.Prescriptions.Where(x => listIdMedicine.Contains((Guid)x.IdMedicine)).ToListAsync();
-                    if(checkMedicine.Count()!=listIdMedicine.Count())
+                    var checkMedicine = await db.medicines.Where(x => listIdMedicine.Contains(x.IdMedicine)).ToListAsync();
+                    if (checkMedicine.Count()!=listIdMedicine.Count())
                     {
                         return new RepoResponse<Guid> { Status = 0,Msg =" Có thuốc không tồn tại " };
                     }
@@ -52,8 +52,8 @@ namespace ClinicAPI.Repo
                             };
                             listInsertMedicinePrescription.Add(medicinePre);
                         }
-                        //db.PreMedicine.AddRange(listInsertMedicinePrescription);
-                        //db.MedicinePrescriptions.Add(prescriptions);
+                        db.PreMedicine.AddRange(listInsertMedicinePrescription);
+                        db.Prescriptions.Add(prescriptions);
                         await db.SaveChangesAsync();
                         return new RepoResponse<Guid> { Status = 1, Data = prescriptions.Id };
                     

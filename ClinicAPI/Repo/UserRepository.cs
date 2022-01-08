@@ -12,44 +12,25 @@ namespace ClinicAPI.Repo
 {
     public class UserRepository
     {
-<<<<<<< HEAD
         public async Task<RepoResponse<Guid>> Create(CreatUserRequest request)
         {
             try
             {
-=======
-        public async Task<RepoResponse<Guid>> Create(CreatUserRequest request )
-        {
-            try
-            { 
->>>>>>> 38e20eabbc43b4bb1c7983053b97dcf501223b5b
                 using (var db = new MyDbContext())
                 {
                     var checkUser = await db.UserPeoples.Where(x => x.UserName == request.Username).FirstOrDefaultAsync();
                     if (checkUser != null)
                     {
-<<<<<<< HEAD
                         return new RepoResponse<Guid> { Status = 0, Msg = " Đã tồn tại bệnh nhân " };
-=======
-                        return new RepoResponse<Guid> {Status = 0 , Msg = " Đã tồn tại bệnh nhân " };
->>>>>>> 38e20eabbc43b4bb1c7983053b97dcf501223b5b
                     }
                     var insertUser = new UserPeople
                     {
                         Id = Guid.NewGuid(),
-<<<<<<< HEAD
                         IdentityCard = request.IdentityCard,
                         Job = request.Job,
                         Avatar = request.Avatar,
                         Note1 = request.Note1,
                         Note2 = request.Note2,
-=======
-                        IdentityCard=request.IdentityCard,
-                        Job=request.Job,
-                        Avatar=request.Avatar,
-                        Note1=request.Note1,
-                        Note2=request.Note2,
->>>>>>> 38e20eabbc43b4bb1c7983053b97dcf501223b5b
                         Name = request.Name,
                         Sex = request.Sex,
                         YearOfBirth = request.YearOfBirth,
@@ -59,13 +40,8 @@ namespace ClinicAPI.Repo
                         PassWord = request.Password
                     };
                     db.UserPeoples.Add(insertUser);
-<<<<<<< HEAD
                     await db.SaveChangesAsync();
                     return new RepoResponse<Guid> { Status = 1, Msg = " Tạo User thành công ", Data = insertUser.Id };
-=======
-                   await db.SaveChangesAsync();
-                   return new RepoResponse<Guid> { Status = 1, Msg = " Tạo User thành công " ,Data=insertUser.Id};
->>>>>>> 38e20eabbc43b4bb1c7983053b97dcf501223b5b
                 }
             }
             catch (Exception e)
@@ -104,13 +80,8 @@ namespace ClinicAPI.Repo
             try
             {
                 var User = new UserPeople
-<<<<<<< HEAD
                 {
                     Id = request.Id,
-=======
-                {   
-                    Id=request.Id,
->>>>>>> 38e20eabbc43b4bb1c7983053b97dcf501223b5b
                     IdentityCard = request.IdentityCard,
                     Job = request.Job,
                     Avatar = request.Avatar,

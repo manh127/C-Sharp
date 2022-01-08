@@ -93,16 +93,74 @@ namespace ClinicAPI.Repo
                 return new RepoResponse<double> { Status = 0, Msg = " Lỗi" };
             }
         }
-        public async Task<RepoResponse<double>> GetAllPriceSchedule()
+        public async Task<RepoResponse<GetInformationPatientModels>> GetInformationPatientPrice(GetInfomationPatientt request)
         {
             try
             {
-
+                using ( var db = new MyDbContext())
+                {
+                    var checkPatient = await db.UserPeoples.Where(x => x.Id == request.IdPatient).FirstOrDefaultAsync();
+                        if(checkPatient==null)
+                    {
+                        return new RepoResponse<GetInformationPatientModels> { Status = 0, Msg = "Không tồn tại bệnh nhân" };
+                    }
+                    var checkSchedule = await db.Schedules.Where(x => x.Id == request.IdSchedule).
+                        Join(db.Services , s=>s.ServiceId,sh=>sh.Id,(s,sh)=>new { s, sh }).Join(db.UserPeoples,a=>a.s.PatientId,b=>b.Id,(a,b)=>new {a,b}).FirstOrDefaultAsync();
+                    if (checkSchedule == null)
+                    {
+                        return new RepoResponse<GetInformationPatientModels> { Status = 0, Msg = "Không tồn tại lịch hẹn này" };
+                    }
+                    var checkRevenue = await db.Revenues.Where(x => x.ScheduleId == request.IdSchedule).FirstOrDefaultAsync();
+                    var checkPrescription = await db.Prescriptions.Where(x => x.IdSchedule == request.IdSchedule).FirstOrDefaultAsync();
+                    var revenuePrice = checkRevenue.Price;
+                    var listMedicine = new List<PatientMedicineModels>();
+                    double MedicinePrice = 0;
+                    if (checkPrescription != null)
+                    {
+                        var getListMedicineId = await db.PreMedicine.Where(x => x.IdPrescription == checkPrescription.Id).
+                            Join(db.medicines, s => s.IdMedicine, sh => sh.IdMedicine, (s, sh) => new { s, sh }).ToListAsync();
+                        
+                        if (getListMedicineId.Count > 0)
+                        {
+                            foreach (var item in getListMedicineId)
+                            {
+                                MedicinePrice += (double)item.s.QuantilyMedicine * Int32.Parse(item.sh.PriceMedicine);
+                                var MedicineInfor = new PatientMedicineModels
+                                {
+                                    NameMedicine = item.sh.NameMedicine,
+                                    Quantity = Int32.Parse(item.sh.Quantily),
+                                    PriceMedicine = Int32.Parse(item.sh.PriceMedicine),
+                                    TotalPrice = Int32.Parse(item.sh.Quantily) * Int32.Parse(item.sh.PriceMedicine)
+                                   
+                                };
+                                listMedicine.Add(MedicineInfor);
+                            }
+                        }
+                    }
+                    var InformationPatient = new GetInformationPatientModels
+                    {
+                        NamePatient = checkSchedule.b.Name,
+                        Address = checkSchedule.b.Address,
+                        IdentityCard = checkSchedule.b.IdentityCard,
+                        Job = checkSchedule.b.Job,
+                        Sex = checkSchedule.b.Sex,
+                        Phone = checkSchedule.b.Phone,
+                        YearOfBirth = checkSchedule.b.YearOfBirth,
+                        Service = checkSchedule.a.sh.Name,
+                        PriceService = checkSchedule.a.sh.Price,
+                        TimeStampPaid = checkRevenue.Time,
+                        NamePrescription = checkPrescription.Name,
+                        TimeStampSchedule = checkSchedule.a.s.DateTimeStamp,
+                        PriceSchedule = MedicinePrice + revenuePrice,
+                        Medicine = listMedicine
+                    };
+                    return new RepoResponse<GetInformationPatientModels> { Status = 1, Data = InformationPatient };
+                }
             }
             catch (Exception)
             {
 
-                throw;
+                return new RepoResponse<GetInformationPatientModels> { Status = 0, Msg =" Lỗi" };
             }
         }
     }

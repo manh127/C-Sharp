@@ -9,8 +9,10 @@ namespace ClinicAPI.Models
     {
 
         public string NameMedicine { get; set; }
-        public int Quantity { get; set; }
+        public string Quantity { get; set; }
         public double PriceMedicine { get; set; }
-        public double TotalPrice { get; set; }
+        public Int64 TotalPrice { get; set; }
+
+        public int QuantilyMedicine { get; set; }
     }
 }

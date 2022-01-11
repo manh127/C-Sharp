@@ -24,6 +24,10 @@ namespace ClinicAPI.Controllers
         {
             return await repositoryPrescription.CreatePrescription(request);
         }
-     
+        [HttpPost("delete-presctiption-medicine")]
+        public async Task<RepoResponse<string>> DeletePresctiption(Guid Id)
+        {
+            return await repositoryPrescription.DeletePresctiption(Id);
+        }
     }
 }

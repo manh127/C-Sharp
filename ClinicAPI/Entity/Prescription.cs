@@ -17,7 +17,7 @@ namespace ClinicAPI.Entity
         public Guid? IdSchedule { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
-        public double TimeStamp { get; set; }
+        public string TimeStamp { get; set; }
         public Guid IdMedicine { get; set; }
         public string NameMedicine { get; set; }
         public string UseMedicine { get; set; }

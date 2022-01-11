@@ -20,13 +20,13 @@ namespace ClinicAPI.Repo
                 using (var db = new MyDbContext())
                 {
                     var checkSchedule = await db.Schedules.Where(x => x.Id == request.ScheduleId).
-                        Join(db.Services, sh => sh.ServiceId, sv => sv.Id, (sh, sv) =>new {sh,sv}).FirstOrDefaultAsync();
+                        Join(db.Services, sh => sh.ServiceId, sv => sv.Id, (sh, sv) => new { sh, sv }).FirstOrDefaultAsync();
 
-                    if(checkSchedule == null)
+                    if (checkSchedule == null)
                     {
                         return new RepoResponse<string> { Status = 0, Msg = "Không tồn tại lịch hẹn" };
                     }
-                    if(checkSchedule.sh.Status != 1)
+                    if (checkSchedule.sh.Status != 1)
                     {
                         return new RepoResponse<string> { Status = 0, Msg = "Lịch hẹn chưa được xác nhận" };
                     }
@@ -39,12 +39,12 @@ namespace ClinicAPI.Repo
                         Time = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
                     };
                     var schedule = checkSchedule.sh;
-                    schedule.Status =(int) ScheduleStatus.PAIED;
+                    //schedule.Status =(int) ScheduleStatus.PAIED;
                     db.Revenues.Add(payment);
                     db.Schedules.Update(schedule);
                     await db.SaveChangesAsync();
                 }
-                return new RepoResponse<string> { Status = 1, Msg = "Không tồn tại lịch hẹn" };
+                return new RepoResponse<string> { Status = 1, Msg = "Tao hoa don thanh cong" };
             }
             catch (Exception)
             {
@@ -55,31 +55,31 @@ namespace ClinicAPI.Repo
         {
             try
             {
-                using ( var db = new MyDbContext())
+                using (var db = new MyDbContext())
                 {
                     var checkSchedule = await db.Schedules.Where(x => x.Id == request.Idschedule).FirstOrDefaultAsync();
-                    if(checkSchedule==null)
+                    if (checkSchedule == null)
                     {
                         return new RepoResponse<double> { Status = 0, Msg = "Không tồn tại lịch hẹn" };
                     }
-                   if(checkSchedule.Status!=2)
-                    {
-                        return new RepoResponse<double> { Status = 0, Msg = " Lịch hẹn chưa dược thanh toán" };
-                    }
+                    //if(checkSchedule.Status!=1)
+                    //{
+                    //     return new RepoResponse<double> { Status = 0, Msg = " Lịch hẹn chưa dược thanh toán" };
+                    // }
                     var getPriceRevenue = await db.Revenues.Where(x => x.ScheduleId == request.Idschedule).FirstOrDefaultAsync();
-                    var revenuePrice=getPriceRevenue.Price;
+                    var revenuePrice = getPriceRevenue.Price;
                     var checkPrescription = await db.Prescriptions.Where(x => x.IdSchedule == request.Idschedule).FirstOrDefaultAsync();
                     double MedicinePrice = 0;
-                    if (checkPrescription!=null)
+                    if (checkPrescription != null)
                     {
-                        var getListMedicineId = await db.PreMedicine.Where(x => x.IdPrescription==checkPrescription.Id).
-                            Join(db.medicines,s=>s.IdMedicine,sh=>sh.IdMedicine,(s,sh)=>new {s,sh }).ToListAsync();
-                        
-                       if(getListMedicineId.Count>0)
+                        var getListMedicineId = await db.PreMedicine.Where(x => x.IdPrescription == checkPrescription.Id).
+                            Join(db.medicines, s => s.IdMedicine, sh => sh.IdMedicine, (s, sh) => new { s, sh }).ToListAsync();
+
+                        if (getListMedicineId.Count > 0)
                         {
                             foreach (var item in getListMedicineId)
                             {
-                                MedicinePrice +=(double) item.s.QuantilyMedicine * Int32.Parse(item.sh.PriceMedicine);
+                                MedicinePrice += (double)item.s.QuantilyMedicine * Int32.Parse(item.sh.PriceMedicine);
                             }
                         }
 
@@ -97,15 +97,15 @@ namespace ClinicAPI.Repo
         {
             try
             {
-                using ( var db = new MyDbContext())
+                using (var db = new MyDbContext())
                 {
                     var checkPatient = await db.UserPeoples.Where(x => x.Id == request.IdPatient).FirstOrDefaultAsync();
-                        if(checkPatient==null)
+                    if (checkPatient == null)
                     {
                         return new RepoResponse<GetInformationPatientModels> { Status = 0, Msg = "Không tồn tại bệnh nhân" };
                     }
                     var checkSchedule = await db.Schedules.Where(x => x.Id == request.IdSchedule).
-                        Join(db.Services , s=>s.ServiceId,sh=>sh.Id,(s,sh)=>new { s, sh }).Join(db.UserPeoples,a=>a.s.PatientId,b=>b.Id,(a,b)=>new {a,b}).FirstOrDefaultAsync();
+                        Join(db.Services, s => s.ServiceId, sh => sh.Id, (s, sh) => new { s, sh }).Join(db.UserPeoples, a => a.s.PatientId, b => b.Id, (a, b) => new { a, b }).FirstOrDefaultAsync();
                     if (checkSchedule == null)
                     {
                         return new RepoResponse<GetInformationPatientModels> { Status = 0, Msg = "Không tồn tại lịch hẹn này" };
@@ -119,20 +119,20 @@ namespace ClinicAPI.Repo
                     {
                         var getListMedicineId = await db.PreMedicine.Where(x => x.IdPrescription == checkPrescription.Id).
                             Join(db.medicines, s => s.IdMedicine, sh => sh.IdMedicine, (s, sh) => new { s, sh }).ToListAsync();
-                        
+
                         if (getListMedicineId.Count > 0)
                         {
                             foreach (var item in getListMedicineId)
                             {
                                 MedicinePrice += (double)item.s.QuantilyMedicine * Int32.Parse(item.sh.PriceMedicine);
-                                var MedicineInfor = new PatientMedicineModels
-                                {
-                                    NameMedicine = item.sh.NameMedicine,
-                                    Quantity = Int32.Parse(item.sh.Quantily),
-                                    PriceMedicine = Int32.Parse(item.sh.PriceMedicine),
-                                    TotalPrice = Int32.Parse(item.sh.Quantily) * Int32.Parse(item.sh.PriceMedicine)
-                                   
-                                };
+                                var MedicineInfor = new PatientMedicineModels();
+                                MedicineInfor.QuantilyMedicine = item.s.QuantilyMedicine;
+                                MedicineInfor.NameMedicine = item.sh.NameMedicine;
+                                MedicineInfor.Quantity = item.sh.Quantily;
+                                MedicineInfor.PriceMedicine = Int32.Parse(item.sh.PriceMedicine);
+                                MedicineInfor.TotalPrice = Int32.Parse(item.s.QuantilyMedicine.ToString()) * Int32.Parse(item.sh.PriceMedicine);
+
+
                                 listMedicine.Add(MedicineInfor);
                             }
                         }
@@ -157,10 +157,10 @@ namespace ClinicAPI.Repo
                     return new RepoResponse<GetInformationPatientModels> { Status = 1, Data = InformationPatient };
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                return new RepoResponse<GetInformationPatientModels> { Status = 0, Msg =" Lỗi" };
+                return new RepoResponse<GetInformationPatientModels> { Status = 0, Msg = " Lỗi" };
             }
         }
     }

@@ -125,6 +125,34 @@ namespace ClinicAPI.Repo
         //        throw;
         //    }
         //}
+       public async Task<RepoResponse<string>> DeletePresctiption (Guid Id)
+        {
+            try
+            {
+                using (var db = new MyDbContext())
+                {
+                    var checkIdPrescription = await db.Prescriptions.Where(x => x.Id == Id).FirstOrDefaultAsync();
+                    if(checkIdPrescription==null)
+                    {
+                        return new RepoResponse<string> { Status = 0, Msg = "Không tồnt tại đơn thuốc này" };
+                    }
+                    else
+                    {
+                        db.Prescriptions.Remove(checkIdPrescription);
+                        await db.SaveChangesAsync();
+                        return new RepoResponse<string> { Status = 1, Msg = "xoá đơn thuốc thành công" };
+                    }
+                        
 
-    }
+                    
+                }
+            }
+            catch (Exception e)
+            {
+
+                return new RepoResponse<string> { Status = 0, Msg = "LỖi" };
+            }
+        }
+
+}
 }

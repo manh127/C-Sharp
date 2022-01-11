@@ -10,7 +10,7 @@ namespace ClinicAPI.Request
     {
         public Guid? IdSchedule { get; set; }
         public string Name { get; set; }
-        public double TimeStamp { get; set; }
+        public string TimeStamp { get; set; }
         public string Code { get; set; }
         public List<PrescriptionMedicineModels> Medicines { get; set; }
     }

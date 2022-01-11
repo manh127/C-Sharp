@@ -9,7 +9,7 @@ namespace ClinicAPI.Models
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public double TimeStamp { get; set; }
+        public string TimeStamp { get; set; }
         public string Code { get; set; }
 
     }
